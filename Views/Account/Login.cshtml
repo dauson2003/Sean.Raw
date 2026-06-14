@@ -1,0 +1,31 @@
+@model SeanRaw.Web.Models.LoginViewModel
+@{ ViewData["Title"] = "Đăng nhập"; Layout = "_Layout"; }
+
+<div class="form-page">
+    <div class="form-box">
+        <div class="form-logo">SEAN<span>.RAW</span></div>
+        <p class="form-tagline">Đăng nhập để đặt lịch và xem album của bạn</p>
+
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input asp-for="Email" class="form-input" placeholder="your@email.com" autocomplete="email" />
+                <span asp-validation-for="Email" class="form-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mật khẩu</label>
+                <input asp-for="MatKhau" type="password" class="form-input" placeholder="••••••••" autocomplete="current-password" />
+                <span asp-validation-for="MatKhau" class="form-error"></span>
+            </div>
+
+            <button type="submit" class="form-submit">Đăng nhập</button>
+        </form>
+
+        <p class="form-alt">
+            Chưa có tài khoản? <a href="/Account/Register">Đăng ký miễn phí</a>
+        </p>
+    </div>
+</div>

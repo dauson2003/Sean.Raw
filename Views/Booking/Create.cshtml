@@ -1,0 +1,74 @@
+@model SeanRaw.Web.Models.BookingViewModel
+@{ ViewData["Title"] = "Đặt lịch chụp"; }
+
+<div class="booking-page">
+    <p class="section-eyebrow">Dịch vụ</p>
+    <h1 class="booking-title">Đặt lịch chụp</h1>
+    <p class="booking-sub">Chọn nhiếp ảnh gia, gói dịch vụ và thời gian phù hợp với bạn.</p>
+
+    <form asp-action="Create" method="post">
+        <div class="booking-grid">
+
+            <div class="form-group">
+                <label class="form-label">Nhiếp ảnh gia</label>
+                <select asp-for="IdPhotographer" class="form-select">
+                    <option value="">-- Chọn nhiếp ảnh gia --</option>
+                    @if (ViewBag.ThoPhanh != null)
+                    {
+                        @foreach (var p in ViewBag.ThoPhanh)
+                        {
+                            <option value="@p.IdNguoiDung">@p.HoTenDayDu</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Gói dịch vụ</label>
+                <select asp-for="IdGoiDichVu" class="form-select">
+                    <option value="">-- Chọn gói --</option>
+                    @if (ViewBag.GoiDichVu != null)
+                    {
+                        @foreach (var g in ViewBag.GoiDichVu)
+                        {
+                            <option value="@g.IdGoiDichVu">@g.TenGoi — @g.GiaTien.ToString("N0") ₫</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Ngày chụp</label>
+                <input asp-for="NgayChup" type="date" class="form-input"
+                       min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")"
+                       style="color-scheme: dark;" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Khung giờ</label>
+                <select asp-for="KhungGio" class="form-select">
+                    <option value="">-- Chọn giờ --</option>
+                    <option value="07:00-09:00">07:00 – 09:00 (Golden Hour sáng)</option>
+                    <option value="09:00-11:00">09:00 – 11:00</option>
+                    <option value="14:00-16:00">14:00 – 16:00</option>
+                    <option value="16:00-18:00">16:00 – 18:00 (Golden Hour chiều)</option>
+                    <option value="18:00-20:00">18:00 – 20:00 (Blue Hour)</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label class="form-label">Địa điểm chụp</label>
+                <input asp-for="DiaDiem" class="form-input"
+                       placeholder="Ví dụ: Hồ Hoàn Kiếm, Hà Nội / Studio tại nhà" />
+            </div>
+
+        </div>
+
+        <div style="margin-top: 48px; display: flex; gap: 16px; align-items: center;">
+            <button type="submit" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body);">
+                Xác nhận đặt lịch
+            </button>
+            <a href="/" class="btn-ghost">Hủy</a>
+        </div>
+    </form>
+</div>

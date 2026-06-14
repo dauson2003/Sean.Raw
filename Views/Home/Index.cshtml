@@ -1,0 +1,114 @@
+@model dynamic
+@{
+    ViewData["Title"] = "Home";
+    var goiDichVu = ViewBag.GoiDichVu as List<SeanRaw.Web.Models.ServicePackage>;
+    var sanPham   = ViewBag.SanPham   as List<SeanRaw.Web.Models.Product>;
+}
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section class="hero">
+    <div class="hero-visual">
+        <div class="hero-light"></div>
+    </div>
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">Hanoi · Portrait · Editorial</p>
+        <h1 class="hero-title">
+            Khoảnh khắc<br>
+            <em>thật sự</em><br>
+            của bạn.
+        </h1>
+        <p class="hero-sub">
+            Nhiếp ảnh chân dung và kỷ yếu theo phong cách điện ảnh —
+            ánh sáng tự nhiên, cảm xúc thật, không dàn dựng.
+        </p>
+        <div class="hero-actions">
+            <a href="/Booking/Create" class="btn-gold">Đặt lịch ngay</a>
+            <div class="hero-divider"></div>
+            <a href="#packages" class="btn-ghost">Xem gói chụp</a>
+        </div>
+    </div>
+</section>
+
+<!-- ── PACKAGES ──────────────────────────────────────────── -->
+<section id="packages" style="padding: 100px 64px;">
+    <p class="section-eyebrow">Dịch vụ</p>
+    <h2 class="section-title">Gói chụp ảnh</h2>
+
+    <div class="packages-grid">
+        @if (goiDichVu != null && goiDichVu.Any())
+        {
+            @foreach (var goi in goiDichVu)
+            {
+                <div class="package-card">
+                    <div class="package-price">@goi.GiaTien.ToString("N0")</div>
+                    <div class="package-unit">VNĐ / buổi chụp</div>
+                    <h3 class="package-name">@goi.TenGoi</h3>
+                    <p class="package-desc">@goi.MoTaQuyenLoi</p>
+                    <p class="package-photos">@goi.SoAnhDuocSua ảnh hậu kỳ</p>
+                    <br>
+                    <a href="/Booking/Create?goiId=@goi.IdGoiDichVu" class="btn-gold" style="font-size:11px; padding: 10px 24px;">
+                        Chọn gói này
+                    </a>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="package-card">
+                <p style="color: var(--silver);">Chưa có gói dịch vụ nào.</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ── ABOUT STRIP ────────────────────────────────────────── -->
+<section style="padding: 80px 64px; background: var(--ink-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1100px; margin: 0 auto;">
+        <div>
+            <p class="section-eyebrow">Nhiếp ảnh gia</p>
+            <h2 style="font-family: var(--ff-display); font-size: 48px; font-weight: 300; line-height: 1.1; margin-bottom: 24px;">
+                Đậu Nguyễn<br><em style="color: var(--gold);">Nam Sơn</em>
+            </h2>
+            <p style="color: var(--silver); line-height: 1.9; font-size: 14px; margin-bottom: 32px;">
+                Chuyên chụp chân dung và kỷ yếu theo phong cách điện ảnh.
+                Mỗi bức ảnh là một khoảnh khắc được giữ lại — ánh sáng tự nhiên,
+                cảm xúc thật, không cần bộ lọc giả tạo.
+            </p>
+            <a href="/Booking/Create" class="btn-gold">Làm việc cùng tôi</a>
+        </div>
+        <div style="position: relative; height: 420px; background: var(--ink-mid); border: 1px solid var(--border); overflow: hidden;">
+            <!-- Placeholder avatar với cinematic vignette -->
+            <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.12) 0%, transparent 60%);"></div>
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(to top, var(--ink-soft), transparent);"></div>
+            <p style="position: absolute; bottom: 32px; left: 32px; font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.2em; color: var(--gold-dim); text-transform: uppercase;">
+                Sean.raw · Hanoi · 2026
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ── PRODUCTS PREVIEW ───────────────────────────────────── -->
+@if (sanPham != null && sanPham.Any())
+{
+    <section style="padding: 100px 64px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 64px;">
+            <div>
+                <p class="section-eyebrow">Cửa hàng</p>
+                <h2 class="section-title" style="margin-bottom: 0;">Phụ kiện máy ảnh</h2>
+            </div>
+            <a href="/Home/Store" class="btn-ghost">Xem tất cả</a>
+        </div>
+        <div class="products-grid">
+            @foreach (var p in sanPham)
+            {
+                <div class="product-card">
+                    <p class="product-brand">@p.HangMayTuongThich</p>
+                    <h3 class="product-name">@p.TenSanPham</h3>
+                    <p class="product-spec">@p.ThongSoChiTiet</p>
+                    <p class="product-price">@p.GiaBanNiemYet.ToString("N0") ₫</p>
+                </div>
+            }
+        </div>
+    </section>
+}

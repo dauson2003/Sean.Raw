@@ -1,0 +1,46 @@
+@model SeanRaw.Web.Models.User
+@{ ViewData["Title"] = "Đăng ký"; Layout = "_Layout"; }
+
+<div class="form-page">
+    <div class="form-box" style="max-width: 520px;">
+        <div class="form-logo">SEAN<span>.RAW</span></div>
+        <p class="form-tagline">Tạo tài khoản để đặt lịch chụp và xem album</p>
+
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+            <div class="form-group">
+                <label class="form-label">Họ và tên</label>
+                <input asp-for="HoTenDayDu" class="form-input" placeholder="Nguyễn Văn A" />
+            </div>
+
+            <div class="booking-grid" style="gap: 24px; margin-bottom: 0;">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input asp-for="DiaChiEmail" class="form-input" placeholder="your@email.com" />
+                    <span asp-validation-for="DiaChiEmail" class="form-error"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Số điện thoại</label>
+                    <input asp-for="SoDienThoai" class="form-input" placeholder="0901234567" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Tên đăng nhập</label>
+                <input asp-for="TenDangNhap" class="form-input" placeholder="username" autocomplete="username" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mật khẩu</label>
+                <input name="matKhau" type="password" class="form-input" placeholder="Ít nhất 8 ký tự" autocomplete="new-password" />
+            </div>
+
+            <button type="submit" class="form-submit">Tạo tài khoản</button>
+        </form>
+
+        <p class="form-alt">
+            Đã có tài khoản? <a href="/Account/Login">Đăng nhập</a>
+        </p>
+    </div>
+</div>

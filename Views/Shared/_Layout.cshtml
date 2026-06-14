@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — SEAN.RAW</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav class="nav">
+    <a href="/" class="nav-logo">SEAN<span>.RAW</span></a>
+    <ul class="nav-links">
+        <li><a href="/">Trang chủ</a></li>
+        <li><a href="/Home/Store">Cửa hàng</a></li>
+        <li><a href="/Booking/Create">Đặt lịch</a></li>
+        @if (Context.Session.GetString("UserRole") == "admin")
+        {
+            <li><a href="/Admin">Admin</a></li>
+        }
+    </ul>
+    <div class="nav-auth">
+        @if (Context.Session.GetString("UserId") != null)
+        {
+            <span class="nav-user">@Context.Session.GetString("UserName")</span>
+            <a href="/Account/Logout" class="btn-ghost">Đăng xuất</a>
+        }
+        else
+        {
+            <a href="/Account/Login" class="btn-ghost">Đăng nhập</a>
+            <a href="/Account/Register" class="btn-primary">Đăng ký</a>
+        }
+    </div>
+</nav>
+
+<!-- ── MAIN ─────────────────────────────────────────────── -->
+<main>
+    @if (TempData["Success"] != null)
+    {
+        <div class="toast toast-success">@TempData["Success"]</div>
+    }
+    @RenderBody()
+</main>
+
+<!-- ── FOOTER ────────────────────────────────────────────── -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <span class="footer-logo">SEAN<em>.RAW</em></span>
+            <p>Photography · Hanoi, Vietnam</p>
+        </div>
+        <div class="footer-links">
+            <a href="/Booking/Create">Đặt lịch chụp</a>
+            <a href="/Home/Store">Phụ kiện</a>
+            <a href="/Account/Login">Đăng nhập</a>
+        </div>
+        <p class="footer-copy">© 2026 Sean.raw. Đậu Nguyễn Nam Sơn.</p>
+    </div>
+</footer>
+
+<script>
+// Auto-hide toast
+setTimeout(() => {
+    const t = document.querySelector('.toast');
+    if (t) t.style.opacity = '0';
+}, 3000);
+</script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
