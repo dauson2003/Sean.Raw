@@ -1,0 +1,168 @@
+@model List<SeanRaw.Web.Models.Booking>
+@{
+    ViewData["Title"] = "Thống kê doanh thu";
+    var totalRevenue = Model?.Where(b => b.TrangThaiBooking == "hoan_tat").Sum(b => b.TongTienHopDong) ?? 0;
+    var totalDeposit = Model?.Sum(b => b.TienDaDatCoc) ?? 0;
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <p class="section-eyebrow">Báo cáo</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Thống kê doanh thu</h1>
+        <p class="hero-sub" style="color: var(--silver);">Theo dõi thu nhập từ các buổi chụp đã hoàn tất</p>
+    </div>
+</section>
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+        <!-- Summary Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 60px;">
+
+            <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    💰 Tổng doanh thu
+                </p>
+                <p style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    @totalRevenue.ToString("N0") ₫
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Từ các buổi chụp hoàn tất
+                </p>
+            </div>
+
+            <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    🧾 Tiền đã đặt cọc
+                </p>
+                <p style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    @totalDeposit.ToString("N0") ₫
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Tổng cọc từ tất cả buổi chụp
+                </p>
+            </div>
+
+            <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    📅 Tổng số buổi chụp
+                </p>
+                <p style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    @(Model?.Count ?? 0)
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Tất cả trạng thái
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Monthly Breakdown -->
+        <div style="border-top: 1px solid var(--border); padding-top: 60px; margin-bottom: 60px;">
+            <h2 class="section-title" style="margin-bottom: 40px;">Doanh thu theo tháng</h2>
+
+            @{
+                var monthly = ViewBag.MonthlyEarnings as IEnumerable<dynamic>;
+            }
+
+            @if (monthly != null && monthly.Any())
+            {
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    @{
+                        decimal maxRevenue = 0;
+                        foreach (var m in monthly)
+                        {
+                            decimal r = (decimal)m.Revenue;
+                            if (r > maxRevenue) { maxRevenue = r; }
+                        }
+                    }
+                    @foreach (var m in monthly)
+                    {
+                        decimal revenue = (decimal)m.Revenue;
+                        double percent = maxRevenue > 0 ? (double)(revenue / maxRevenue) * 100 : 0;
+                        <div style="display: grid; grid-template-columns: 100px 1fr 160px; gap: 16px; align-items: center;">
+                            <p style="color: var(--silver); font-size: 14px; margin: 0;">@m.Month</p>
+                            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 2px; height: 28px; position: relative; overflow: hidden;">
+                                <div style="background: linear-gradient(90deg, var(--gold) 0%, rgba(201,168,76,0.4) 100%); height: 100%; width: @percent.ToString("0.##")%;"></div>
+                            </div>
+                            <p style="color: var(--gold); font-size: 14px; margin: 0; text-align: right; font-family: var(--ff-display);">@revenue.ToString("N0") ₫</p>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p style="color: var(--silver); font-size: 14px;">Chưa có dữ liệu doanh thu theo tháng.</p>
+            }
+        </div>
+
+        <!-- Booking History -->
+        <div style="border-top: 1px solid var(--border); padding-top: 60px;">
+            <h2 class="section-title" style="margin-bottom: 40px;">Lịch sử các buổi chụp</h2>
+
+            @if (Model != null && Model.Any())
+            {
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border);">
+                                <th style="text-align: left; padding: 16px 0; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">ID</th>
+                                <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Ngày chụp</th>
+                                <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Tổng tiền</th>
+                                <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Đã cọc</th>
+                                <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var booking in Model)
+                            {
+                                <tr style="border-bottom: 1px solid var(--border);">
+                                    <td style="padding: 16px 0; color: var(--white);">@booking.IdBooking</td>
+                                    <td style="padding: 16px 12px; color: var(--white);">@booking.NgayChupThucTe.ToString("dd/MM/yyyy")</td>
+                                    <td style="padding: 16px 12px; color: var(--gold);">@booking.TongTienHopDong.ToString("N0") ₫</td>
+                                    <td style="padding: 16px 12px; color: var(--white);">@booking.TienDaDatCoc.ToString("N0") ₫</td>
+                                    <td style="padding: 16px 12px;">
+                                        @if (booking.TrangThaiBooking == "cho_dat_coc")
+                                        {
+                                            <span style="background: rgba(201, 168, 76, 0.1); color: var(--gold); padding: 4px 8px; border-radius: 2px; font-size: 12px;">Chờ cọc</span>
+                                        }
+                                        else if (booking.TrangThaiBooking == "da_thanh_toan")
+                                        {
+                                            <span style="background: rgba(74, 158, 100, 0.1); color: #4a9e64; padding: 4px 8px; border-radius: 2px; font-size: 12px;">Đã thanh toán</span>
+                                        }
+                                        else if (booking.TrangThaiBooking == "hoan_tat")
+                                        {
+                                            <span style="background: rgba(100, 100, 100, 0.1); color: var(--silver); padding: 4px 8px; border-radius: 2px; font-size: 12px;">Hoàn tất</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="background: rgba(217, 68, 68, 0.1); color: #d94444; padding: 4px 8px; border-radius: 2px; font-size: 12px;">Hủy</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div style="text-align: center; padding: 60px 24px;">
+                    <p style="color: var(--silver); font-size: 16px; margin: 0;">
+                        Chưa có dữ liệu buổi chụp nào
+                    </p>
+                </div>
+            }
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+            <a href="/Photographer/Dashboard" class="btn-ghost">
+                ← Quay lại Dashboard
+            </a>
+        </div>
+
+    </div>
+</section>

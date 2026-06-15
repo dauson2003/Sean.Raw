@@ -31,8 +31,39 @@ namespace SeanRaw.Web.Controllers
         {
             var products = await _db.Products
                 .Where(p => !p.IsDeleted)
+                .OrderBy(p => p.IdSanPham)
                 .ToListAsync();
-            return View(products);
+
+            ViewBag.SanPham = products;
+            return View();
+        }
+
+        // ── GET /Home/PhotographerProfile/{id} ── Hồ sơ công khai thợ ảnh ──
+        public async Task<IActionResult> PhotographerProfile(string id)
+        {
+            var photographer = await _db.Users
+                .Include(u => u.PhotographerProfile)
+                .FirstOrDefaultAsync(u => u.IdNguoiDung == id && u.VaiTroNguoiDung == "photographer");
+
+            if (photographer == null) return NotFound();
+
+            ViewBag.GoiDichVu = await _db.ServicePackages.ToListAsync();
+
+            var reviews = await _db.Reviews
+                .Include(r => r.Booking)
+                    .ThenInclude(b => b.KhachHang)
+                .Where(r => r.Booking.IdPhotographer == id)
+                .OrderByDescending(r => r.IdDanhGia)
+                .Take(10)
+                .ToListAsync();
+
+            ViewBag.Reviews = reviews;
+
+            var completedCount = await _db.Bookings
+                .CountAsync(b => b.IdPhotographer == id && b.TrangThaiBooking == "hoan_tat");
+            ViewBag.CompletedCount = completedCount;
+
+            return View(photographer);
         }
 
         // ── GET /Home/FixPasswords ── Fix test user passwords ─

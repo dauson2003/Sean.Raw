@@ -1,0 +1,180 @@
+@model SeanRaw.Web.Models.User
+@{
+    ViewData["Title"] = Model.HoTenDayDu + " - Nhiếp ảnh gia";
+    var goiDichVu = ViewBag.GoiDichVu as List<SeanRaw.Web.Models.ServicePackage>;
+    var reviews = ViewBag.Reviews as List<SeanRaw.Web.Models.Review>;
+    var profile = Model.PhotographerProfile;
+    double avgRating = profile?.DiemUyTinTrungBinh ?? 5.0;
+}
+
+<!-- ── HERO / COVER ──────────────────────────────────────── -->
+<section style="padding: 80px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 220px 1fr; gap: 48px; align-items: center;">
+
+        <!-- Avatar -->
+        <div style="position: relative; height: 220px; background: var(--ink-mid); border: 1px solid var(--border); overflow: hidden; border-radius: 2px;">
+            <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.15) 0%, transparent 60%);"></div>
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(to top, var(--ink-soft), transparent);"></div>
+            <p style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--ff-display); font-size: 64px; color: var(--gold-dim); margin: 0;">
+                @Model.HoTenDayDu.Substring(0,1)
+            </p>
+        </div>
+
+        <!-- Info -->
+        <div>
+            <p class="section-eyebrow">Nhiếp ảnh gia</p>
+            <h1 class="hero-title" style="margin-bottom: 12px;">@Model.HoTenDayDu</h1>
+
+            <!-- Rating -->
+            <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 16px;">
+                @for (int i = 0; i < (int)Math.Round(avgRating); i++)
+                {
+                    <span style="font-size: 18px;">⭐</span>
+                }
+                @for (int i = (int)Math.Round(avgRating); i < 5; i++)
+                {
+                    <span style="font-size: 18px; opacity: 0.3;">⭐</span>
+                }
+                <span style="color: var(--gold); font-size: 14px; margin-left: 4px;">@avgRating.ToString("0.0")/5</span>
+                <span style="color: var(--silver); font-size: 13px;">&nbsp;•&nbsp; @(reviews?.Count ?? 0) đánh giá</span>
+            </div>
+
+            <!-- Badges -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;">
+                @if (profile?.TrangThaiXacThuc == "da_xac_thuc")
+                {
+                    <span style="background: rgba(74, 158, 100, 0.1); color: #4a9e64; padding: 6px 12px; border-radius: 2px; font-size: 12px;">✅ Đã xác thực</span>
+                }
+                <span style="background: rgba(201, 168, 76, 0.1); color: var(--gold); padding: 6px 12px; border-radius: 2px; font-size: 12px;">
+                    📷 @ViewBag.CompletedCount buổi chụp đã hoàn tất
+                </span>
+            </div>
+
+            <a href="/Booking/Create?photographerId=@Model.IdNguoiDung" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body); text-decoration: none;">
+                Đặt lịch với @Model.HoTenDayDu.Split(' ').Last()
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── ABOUT ─────────────────────────────────────────────── -->
+<section style="padding: 80px 64px;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+        <p class="section-eyebrow">Giới thiệu</p>
+        <h2 class="section-title">Phong cách & kinh nghiệm</h2>
+
+        @if (!string.IsNullOrEmpty(profile?.GioiThieuPhongCach))
+        {
+            <p style="color: var(--silver); font-size: 15px; line-height: 1.9; max-width: 800px; margin: 0;">
+                @profile.GioiThieuPhongCach
+            </p>
+        }
+        else
+        {
+            <p style="color: var(--silver); font-size: 15px; line-height: 1.9; max-width: 800px; margin: 0;">
+                Nhiếp ảnh gia chưa cập nhật phần giới thiệu phong cách.
+            </p>
+        }
+    </div>
+</section>
+
+<!-- ── SERVICE PACKAGES ──────────────────────────────────── -->
+<section style="padding: 80px 64px; background: var(--ink-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1100px; margin: 0 auto;">
+        <p class="section-eyebrow">Dịch vụ</p>
+        <h2 class="section-title">Gói chụp ảnh</h2>
+
+        <div class="packages-grid">
+            @if (goiDichVu != null && goiDichVu.Any())
+            {
+                @foreach (var goi in goiDichVu)
+                {
+                    <div class="package-card">
+                        <div class="package-price">@goi.GiaTien.ToString("N0")</div>
+                        <div class="package-unit">VNĐ / buổi chụp</div>
+                        <h3 class="package-name">@goi.TenGoi</h3>
+                        <p class="package-desc">@goi.MoTaQuyenLoi</p>
+                        <p class="package-photos">@goi.SoAnhDuocSua ảnh hậu kỳ</p>
+                        <br>
+                        <a href="/Booking/Create?photographerId=@Model.IdNguoiDung&goiId=@goi.IdGoiDichVu" class="btn-gold" style="font-size:11px; padding: 10px 24px;">
+                            Chọn gói này
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="package-card">
+                    <p style="color: var(--silver);">Chưa có gói dịch vụ nào.</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ── REVIEWS ───────────────────────────────────────────── -->
+<section style="padding: 80px 64px;">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <p class="section-eyebrow">Phản hồi</p>
+        <h2 class="section-title">Đánh giá từ khách hàng</h2>
+
+        @if (reviews != null && reviews.Any())
+        {
+            <div style="display: flex; flex-direction: column; gap: 24px; margin-top: 40px;">
+                @foreach (var review in reviews)
+                {
+                    <div style="border: 1px solid var(--border); padding: 28px; border-radius: 2px; background: var(--surface);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                            <p style="font-family: var(--ff-display); font-size: 16px; color: var(--white); margin: 0; font-weight: 400;">
+                                @review.Booking?.KhachHang?.HoTenDayDu
+                            </p>
+                            <p style="color: var(--silver); font-size: 12px; margin: 0;">
+                                @review.NgayTaoPhanHoi.ToString("dd/MM/yyyy")
+                            </p>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            @for (int i = 0; i < review.SoSaoChatLuong; i++)
+                            {
+                                <span style="font-size: 16px;">⭐</span>
+                            }
+                            @for (int i = review.SoSaoChatLuong; i < 5; i++)
+                            {
+                                <span style="font-size: 16px; opacity: 0.3;">⭐</span>
+                            }
+                        </div>
+                        <p style="color: var(--silver); font-size: 14px; line-height: 1.7; margin: 0;">
+                            @review.NoiDungNhanXet
+                        </p>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div style="text-align: center; padding: 60px 24px;">
+                <p style="color: var(--silver); font-size: 16px; margin: 0;">
+                    Nhiếp ảnh gia này chưa có đánh giá nào.
+                </p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ── CTA ───────────────────────────────────────────────── -->
+<section style="padding: 80px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-top: 1px solid var(--border);">
+    <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+        <h2 class="section-title">Sẵn sàng ghi lại khoảnh khắc của bạn?</h2>
+        <p class="hero-sub" style="margin-bottom: 40px;">
+            Đặt lịch ngay với @Model.HoTenDayDu để giữ ngày chụp ưng ý.
+        </p>
+        <div style="display: flex; gap: 16px; justify-content: center;">
+            <a href="/Booking/Create?photographerId=@Model.IdNguoiDung" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body); text-decoration: none;">
+                Đặt lịch ngay
+            </a>
+            <a href="/" class="btn-ghost">
+                ← Quay lại trang chủ
+            </a>
+        </div>
+    </div>
+</section>

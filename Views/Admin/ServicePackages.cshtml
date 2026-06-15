@@ -1,0 +1,134 @@
+@{
+    ViewData["Title"] = "Quản lý gói dịch vụ";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section
+    style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <p class="section-eyebrow">Quản lý</p>
+            <h1 class="hero-title" style="margin-bottom: 0;">Gói dịch vụ chụp ảnh</h1>
+            <p class="hero-sub" style="color: var(--silver);">Cấu hình giá, số ảnh hậu kỳ và quyền lợi cho từng gói</p>
+        </div>
+        <a href="/Admin/ServicePackages/Create" class="btn-gold"
+           style="border: none; cursor: pointer; font-family: var(--ff-body); white-space: nowrap;">
+            + Thêm gói
+        </a>
+    </div>
+</section>
+
+<!-- ── STATS ─────────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 60px;">
+
+            <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    💎 Tổng số gói
+                </p>
+                <p style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    3
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Đang hiển thị cho khách hàng
+                </p>
+            </div>
+
+            <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    📈 Gói phổ biến nhất
+                </p>
+                <p style="font-family: var(--ff-display); font-size: 24px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    Cơ bản
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    42 lượt đặt trong tháng
+                </p>
+            </div>
+
+            <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    💰 Giá trung bình
+                </p>
+                <p style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    4.500.000 ₫
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Trên 3 gói hiện có
+                </p>
+            </div>
+
+        </div>
+
+        <!-- ── TABLE ─────────────────────────────────────────── -->
+        <div style="border-top: 1px solid var(--border); padding-top: 60px;">
+            <h2 class="section-title" style="margin-bottom: 40px;">Danh sách gói dịch vụ</h2>
+
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border);">
+                            <th style="text-align: left; padding: 16px 0; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">ID</th>
+                            <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Tên gói</th>
+                            <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Giá tiền</th>
+                            <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Số ảnh sửa</th>
+                            <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Quyền lợi</th>
+                            <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 16px 0; color: var(--white);">1</td>
+                            <td style="padding: 16px 12px; color: var(--white);">Gói Cơ bản</td>
+                            <td style="padding: 16px 12px; color: var(--gold);">2.500.000 ₫</td>
+                            <td style="padding: 16px 12px; color: var(--white);">15 ảnh</td>
+                            <td style="padding: 16px 12px; color: var(--silver); max-width: 320px;">
+                                1 giờ chụp, 1 địa điểm, giao ảnh trong 5 ngày
+                            </td>
+                            <td style="padding: 16px 12px; display: flex; gap: 8px;">
+                                <a href="#" style="color: var(--gold); text-decoration: underline; cursor: pointer; font-size: 12px;">Sửa</a>
+                                <a href="#" style="color: #d94444; text-decoration: underline; cursor: pointer; font-size: 12px;">Xóa</a>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 16px 0; color: var(--white);">2</td>
+                            <td style="padding: 16px 12px; color: var(--white);">Gói Tiêu chuẩn</td>
+                            <td style="padding: 16px 12px; color: var(--gold);">4.500.000 ₫</td>
+                            <td style="padding: 16px 12px; color: var(--white);">30 ảnh</td>
+                            <td style="padding: 16px 12px; color: var(--silver); max-width: 320px;">
+                                2 giờ chụp, 2 địa điểm, giao ảnh trong 3 ngày, 1 ảnh in khung
+                            </td>
+                            <td style="padding: 16px 12px; display: flex; gap: 8px;">
+                                <a href="#" style="color: var(--gold); text-decoration: underline; cursor: pointer; font-size: 12px;">Sửa</a>
+                                <a href="#" style="color: #d94444; text-decoration: underline; cursor: pointer; font-size: 12px;">Xóa</a>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 16px 0; color: var(--white);">3</td>
+                            <td style="padding: 16px 12px; color: var(--white);">Gói Cao cấp</td>
+                            <td style="padding: 16px 12px; color: var(--gold);">6.500.000 ₫</td>
+                            <td style="padding: 16px 12px; color: var(--white);">50 ảnh</td>
+                            <td style="padding: 16px 12px; color: var(--silver); max-width: 320px;">
+                                4 giờ chụp, không giới hạn địa điểm, giao ảnh trong 24 giờ, album in cao cấp
+                            </td>
+                            <td style="padding: 16px 12px; display: flex; gap: 8px;">
+                                <a href="#" style="color: var(--gold); text-decoration: underline; cursor: pointer; font-size: 12px;">Sửa</a>
+                                <a href="#" style="color: #d94444; text-decoration: underline; cursor: pointer; font-size: 12px;">Xóa</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+            <a href="/Admin" class="btn-ghost">
+                ← Quay lại Dashboard
+            </a>
+        </div>
+
+    </div>
+</section>

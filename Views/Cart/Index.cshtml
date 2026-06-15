@@ -1,0 +1,117 @@
+@model SeanRaw.Web.Models.StoreOrder
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1000px; margin: 0 auto;">
+        <p class="section-eyebrow">Mua sắm</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Giỏ hàng</h1>
+        <p class="hero-sub" style="color: var(--silver);">Kiểm tra lại sản phẩm trước khi thanh toán</p>
+    </div>
+</section>
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 1000px; margin: 0 auto;">
+
+        @if (Model.OrderItems != null && Model.OrderItems.Any())
+        {
+            <!-- Items -->
+            <div style="display: flex; flex-direction: column; gap: 24px; margin-bottom: 40px;">
+                @foreach (var item in Model.OrderItems)
+                {
+                    <div style="border: 1px solid var(--border); border-radius: 2px; padding: 24px; display: grid; grid-template-columns: 100px 1fr auto auto; gap: 24px; align-items: center;">
+
+                        <!-- Thumbnail -->
+                        <div style="background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); height: 80px; border-radius: 2px; display: flex; align-items: center; justify-content: center;">
+                            <span style="color: var(--border); font-size: 11px; letter-spacing: 0.1em;">ẢNH</span>
+                        </div>
+
+                        <!-- Info -->
+                        <div>
+                            <p style="color: var(--gold); font-size: 11px; letter-spacing: 0.08em; margin: 0 0 6px 0; text-transform: uppercase;">
+                                @item.Product?.HangMayTuongThich
+                            </p>
+                            <h3 style="font-family: var(--ff-display); font-size: 18px; color: var(--white); margin: 0 0 6px 0; font-weight: 400;">
+                                @item.Product?.TenSanPham
+                            </h3>
+                            <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                                @item.GiaGiaoDich.ToString("N0") ₫ / sản phẩm
+                            </p>
+                        </div>
+
+                        <!-- Quantity -->
+                        <form method="post" action="/Cart/UpdateQuantity" style="display: flex; align-items: center; gap: 8px;">
+                            <input type="hidden" name="itemId" value="@item.IdChiTiet" />
+                            <button type="submit" name="quantity" value="@(item.SoLuongMua - 1)"
+                                    style="width: 32px; height: 32px; border: 1px solid var(--border); background: transparent; color: var(--white); cursor: pointer; border-radius: 2px;">
+                                −
+                            </button>
+                            <span style="min-width: 24px; text-align: center; color: var(--white); font-size: 14px;">@item.SoLuongMua</span>
+                            <button type="submit" name="quantity" value="@(item.SoLuongMua + 1)"
+                                    style="width: 32px; height: 32px; border: 1px solid var(--border); background: transparent; color: var(--white); cursor: pointer; border-radius: 2px;"
+                                    @(item.SoLuongMua >= (item.Product?.SoLuongTonKho ?? 0) ? "disabled" : "")>
+                                +
+                            </button>
+                        </form>
+
+                        <!-- Subtotal & Remove -->
+                        <div style="text-align: right;">
+                            <p style="color: var(--gold); font-size: 18px; margin: 0 0 8px 0; font-family: var(--ff-display);">
+                                @((item.GiaGiaoDich * item.SoLuongMua).ToString("N0")) ₫
+                            </p>
+                            <form method="post" action="/Cart/Remove">
+                                <input type="hidden" name="itemId" value="@item.IdChiTiet" />
+                                <button type="submit" style="border: none; background: transparent; color: #d94444; text-decoration: underline; cursor: pointer; font-size: 12px; padding: 0;">
+                                    Xóa
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                }
+            </div>
+
+            <!-- Summary -->
+            <div style="border-top: 1px solid var(--border); padding-top: 32px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+                <div>
+                    <p style="color: var(--silver); font-size: 14px; margin: 0;">
+                        Tổng cộng (@Model.OrderItems.Sum(i => i.SoLuongMua) sản phẩm)
+                    </p>
+                </div>
+                <p style="color: var(--gold); font-size: 28px; margin: 0; font-family: var(--ff-display);">
+                    @Model.TongTienHoaDon.ToString("N0") ₫
+                </p>
+            </div>
+
+            <!-- Actions -->
+            <div style="display: flex; gap: 16px; justify-content: flex-end;">
+                <a href="/Home/Store" class="btn-ghost">
+                    ← Tiếp tục mua sắm
+                </a>
+                <a href="/Cart/Checkout" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body); text-decoration: none;">
+                    Tiến hành thanh toán
+                </a>
+            </div>
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div style="text-align: center; padding: 100px 24px;">
+                <p style="font-size: 64px; margin: 0 0 20px 0;">🛒</p>
+                <h2 style="font-family: var(--ff-display); font-size: 28px; color: var(--white); margin: 0 0 12px 0; font-weight: 400;">
+                    Giỏ hàng đang trống
+                </h2>
+                <p style="color: var(--silver); font-size: 16px; margin: 0 0 40px 0;">
+                    Hãy khám phá cửa hàng phụ kiện của chúng tôi.
+                </p>
+                <a href="/Home/Store" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body); text-decoration: none;">
+                    Đến cửa hàng
+                </a>
+            </div>
+        }
+
+    </div>
+</section>

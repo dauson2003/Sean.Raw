@@ -75,7 +75,21 @@ namespace SeanRaw.Web.Controllers
             await _db.SaveChangesAsync();
 
             TempData["Success"] = "Đặt lịch thành công! Vui lòng thanh toán cọc để xác nhận.";
-            return RedirectToAction("Index");
+            return RedirectToAction("Confirmation", new { id = booking.IdBooking });
+        }
+
+        // ── GET /Booking/Confirmation/5 ── Trang xác nhận sau khi đặt ──
+        public async Task<IActionResult> Confirmation(int id)
+        {
+            if (CurrentUserId == null) return RedirectToAction("Login", "Account");
+
+            var booking = await _db.Bookings
+                .Include(b => b.ServicePackage)
+                .Include(b => b.Photographer)
+                .FirstOrDefaultAsync(b => b.IdBooking == id && b.IdKhachHang == CurrentUserId);
+
+            if (booking == null) return NotFound();
+            return View(booking);
         }
 
         // ── GET /Booking/Detail/5 ────────────────────────────

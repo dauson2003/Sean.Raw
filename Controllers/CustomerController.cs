@@ -144,7 +144,7 @@ namespace SeanRaw.Web.Controllers
                 return RedirectToAction("Index", "Home");
 
             var orders = await _db.StoreOrders
-                .Where(o => o.IdKhachHang == CurrentUserId)
+                .Where(o => o.IdKhachHang == CurrentUserId && o.TrangThaiThanhToan != "trong_gio")
                 .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Product)
                 .OrderByDescending(o => o.IdDonHang)

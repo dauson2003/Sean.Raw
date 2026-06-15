@@ -1,0 +1,105 @@
+@model SeanRaw.Web.Models.StoreOrder
+@{
+    ViewData["Title"] = "Thanh toán";
+    var user = ViewBag.User as SeanRaw.Web.Models.User;
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1000px; margin: 0 auto;">
+        <p class="section-eyebrow">Mua sắm</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Thanh toán</h1>
+        <p class="hero-sub" style="color: var(--silver);">Xác nhận thông tin giao hàng và hoàn tất đơn hàng</p>
+    </div>
+</section>
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: start;">
+
+        <!-- Shipping Form -->
+        <div>
+            <h2 class="section-title" style="font-size: 22px; margin-bottom: 24px;">Thông tin giao hàng</h2>
+
+            <form method="post" action="/Cart/PlaceOrder">
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">
+                        Họ và tên người nhận
+                    </label>
+                    <input type="text" value="@user?.HoTenDayDu" readonly
+                           style="width: 100%; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; color: var(--silver); font-family: var(--ff-body); font-size: 14px;" />
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">
+                        Số điện thoại
+                    </label>
+                    <input type="text" value="@user?.SoDienThoai" readonly
+                           style="width: 100%; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; color: var(--silver); font-family: var(--ff-body); font-size: 14px;" />
+                </div>
+
+                <div style="margin-bottom: 32px;">
+                    <label style="display: block; color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">
+                        Địa chỉ giao hàng <span style="color: #d94444;">*</span>
+                    </label>
+                    <textarea name="diaChiGiaoHang" rows="3" required placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố"
+                              style="width: 100%; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; color: var(--white); font-family: var(--ff-body); font-size: 14px; resize: vertical;"></textarea>
+                </div>
+
+                <div style="margin-bottom: 32px;">
+                    <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;">
+                        Phương thức thanh toán
+                    </p>
+                    <div style="border: 1px solid var(--gold); border-radius: 2px; padding: 16px; display: flex; align-items: center; gap: 12px; background: rgba(201,168,76,0.05);">
+                        <span style="font-size: 20px;">💵</span>
+                        <div>
+                            <p style="color: var(--white); font-size: 14px; margin: 0;">Thanh toán khi nhận hàng (COD)</p>
+                            <p style="color: var(--silver); font-size: 12px; margin: 4px 0 0 0;">Đơn hàng sẽ ở trạng thái "Chờ thanh toán" cho đến khi giao hàng thành công</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-gold" style="width: 100%; border: none; cursor: pointer; font-family: var(--ff-body); padding: 16px; font-size: 13px; letter-spacing: 0.1em;">
+                    Đặt hàng
+                </button>
+            </form>
+
+            <div style="margin-top: 24px;">
+                <a href="/Cart" class="btn-ghost">
+                    ← Quay lại giỏ hàng
+                </a>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div style="border: 1px solid var(--border); border-radius: 2px; background: var(--surface); padding: 32px; position: sticky; top: 24px;">
+            <h3 style="font-family: var(--ff-display); font-size: 18px; color: var(--white); margin: 0 0 24px 0; font-weight: 400;">
+                Đơn hàng (@Model.OrderItems.Sum(i => i.SoLuongMua) sản phẩm)
+            </h3>
+
+            <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; max-height: 320px; overflow-y: auto;">
+                @foreach (var item in Model.OrderItems)
+                {
+                    <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 13px;">
+                        <div>
+                            <p style="color: var(--white); margin: 0;">@item.Product?.TenSanPham</p>
+                            <p style="color: var(--silver); margin: 4px 0 0 0;">x@item.SoLuongMua</p>
+                        </div>
+                        <p style="color: var(--gold); margin: 0; white-space: nowrap;">
+                            @((item.GiaGiaoDich * item.SoLuongMua).ToString("N0")) ₫
+                        </p>
+                    </div>
+                }
+            </div>
+
+            <div style="border-top: 1px solid var(--border); padding-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+                <p style="color: var(--white); font-size: 16px; margin: 0;">Tổng cộng</p>
+                <p style="color: var(--gold); font-size: 24px; margin: 0; font-family: var(--ff-display);">
+                    @Model.TongTienHoaDon.ToString("N0") ₫
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>

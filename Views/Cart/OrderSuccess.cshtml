@@ -1,0 +1,71 @@
+@model SeanRaw.Web.Models.StoreOrder
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+}
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 100px 64px; min-height: 70vh; display: flex; align-items: center;">
+    <div style="max-width: 700px; margin: 0 auto; width: 100%;">
+
+        <!-- Success Icon -->
+        <div style="text-align: center; margin-bottom: 48px;">
+            <p style="font-size: 64px; margin: 0 0 24px 0;">✅</p>
+            <p class="section-eyebrow" style="text-align: center;">Đặt hàng thành công</p>
+            <h1 class="hero-title" style="margin-bottom: 16px;">Cảm ơn bạn đã mua sắm!</h1>
+            <p class="hero-sub" style="color: var(--silver);">
+                Đơn hàng của bạn đã được ghi nhận và đang chờ thanh toán / giao hàng.
+            </p>
+        </div>
+
+        <!-- Order Summary Card -->
+        <div style="border: 1px solid var(--border); border-radius: 2px; background: var(--surface); padding: 40px; margin-bottom: 40px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 24px;">
+                <h2 style="font-family: var(--ff-display); font-size: 22px; color: var(--white); margin: 0; font-weight: 400;">
+                    Đơn hàng #@Model.IdDonHang
+                </h2>
+                <span class="badge badge-pending">Chờ thanh toán</span>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 8px 0;">Địa chỉ giao hàng</p>
+                <p style="color: var(--white); font-size: 15px; margin: 0;">📍 @Model.DiaChiGiaoHang</p>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">Sản phẩm</p>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <div style="display: flex; justify-content: space-between; font-size: 14px;">
+                            <p style="color: var(--white); margin: 0;">@item.Product?.TenSanPham <span style="color: var(--silver);">x@item.SoLuongMua</span></p>
+                            <p style="color: var(--gold); margin: 0;">@((item.GiaGiaoDich * item.SoLuongMua).ToString("N0")) ₫</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div style="padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <p style="color: var(--silver); font-size: 14px; margin: 0;">Tổng giá trị đơn hàng</p>
+                <p style="color: var(--gold); font-size: 24px; margin: 0; font-family: var(--ff-display);">@Model.TongTienHoaDon.ToString("N0") ₫</p>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <a href="/Customer/Orders" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body); text-decoration: none;">
+                Xem lịch sử đơn hàng
+            </a>
+            <a href="/Home/Store" class="btn-ghost">
+                Tiếp tục mua sắm
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+            <a href="/" class="btn-ghost">
+                ← Quay lại trang chủ
+            </a>
+        </div>
+
+    </div>
+</section>

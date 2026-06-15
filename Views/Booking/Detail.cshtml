@@ -1,0 +1,156 @@
+@model SeanRaw.Web.Models.Booking
+@{
+    ViewData["Title"] = "Chi tiết buổi chụp";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <p class="section-eyebrow">Chi tiết</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Buổi chụp #@Model.IdBooking</h1>
+        <p class="hero-sub" style="color: var(--silver);">@Model.ServicePackage?.TenGoi</p>
+    </div>
+</section>
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 900px; margin: 0 auto;">
+
+        <!-- Status Badge -->
+        <div style="margin-bottom: 40px;">
+            @if (Model.TrangThaiBooking == "cho_dat_coc")
+            {
+                <span style="background: rgba(201, 168, 76, 0.1); color: var(--gold); padding: 8px 16px; border-radius: 2px; font-size: 13px;">Chờ đặt cọc</span>
+            }
+            else if (Model.TrangThaiBooking == "da_thanh_toan")
+            {
+                <span style="background: rgba(74, 158, 100, 0.1); color: #4a9e64; padding: 8px 16px; border-radius: 2px; font-size: 13px;">Đã thanh toán</span>
+            }
+            else if (Model.TrangThaiBooking == "hoan_tat")
+            {
+                <span style="background: rgba(100, 100, 100, 0.1); color: var(--silver); padding: 8px 16px; border-radius: 2px; font-size: 13px;">Hoàn tất</span>
+            }
+            else
+            {
+                <span style="background: rgba(217, 68, 68, 0.1); color: #d94444; padding: 8px 16px; border-radius: 2px; font-size: 13px;">Hủy</span>
+            }
+        </div>
+
+        <!-- Info Grid -->
+        <div style="border: 1px solid var(--border); border-radius: 2px; background: var(--surface); padding: 40px; margin-bottom: 40px;">
+            <h2 class="section-title" style="font-size: 22px; margin-bottom: 32px;">Thông tin buổi chụp</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                <div>
+                    <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 8px 0;">Nhiếp ảnh gia</p>
+                    <p style="color: var(--white); font-size: 16px; margin: 0;">@Model.Photographer?.HoTenDayDu</p>
+                </div>
+                <div>
+                    <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 8px 0;">Gói dịch vụ</p>
+                    <p style="color: var(--white); font-size: 16px; margin: 0;">@Model.ServicePackage?.TenGoi</p>
+                </div>
+                <div>
+                    <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 8px 0;">Ngày chụp</p>
+                    <p style="color: var(--white); font-size: 16px; margin: 0;">@Model.NgayChupThucTe.ToString("dd/MM/yyyy")</p>
+                </div>
+                <div>
+                    <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 8px 0;">Khung giờ</p>
+                    <p style="color: var(--white); font-size: 16px; margin: 0;">@Model.KhungGioChup</p>
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 8px 0;">Địa điểm chụp</p>
+                    <p style="color: var(--white); font-size: 16px; margin: 0;">📍 @Model.DiaDiemChup</p>
+                </div>
+                @if (Model.ServicePackage?.SoAnhDuocSua > 0)
+                {
+                    <div>
+                        <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 8px 0;">Số ảnh được sửa</p>
+                        <p style="color: var(--white); font-size: 16px; margin: 0;">@Model.ServicePackage.SoAnhDuocSua ảnh</p>
+                    </div>
+                }
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.ServicePackage?.MoTaQuyenLoi))
+            {
+                <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+                    <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 8px 0;">Quyền lợi gói</p>
+                    <p style="color: var(--silver); font-size: 14px; line-height: 1.7; margin: 0;">@Model.ServicePackage.MoTaQuyenLoi</p>
+                </div>
+            }
+        </div>
+
+        <!-- Payment Info -->
+        <div style="border: 1px solid var(--border); border-radius: 2px; background: var(--surface); padding: 40px; margin-bottom: 40px;">
+            <h2 class="section-title" style="font-size: 22px; margin-bottom: 32px;">Thanh toán</h2>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--border); margin-bottom: 16px;">
+                <p style="color: var(--silver); font-size: 14px; margin: 0;">Tổng giá trị hợp đồng</p>
+                <p style="color: var(--white); font-size: 18px; margin: 0; font-family: var(--ff-display);">@Model.TongTienHopDong.ToString("N0") ₫</p>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--border); margin-bottom: 16px;">
+                <p style="color: var(--silver); font-size: 14px; margin: 0;">Đã đặt cọc</p>
+                <p style="color: var(--white); font-size: 18px; margin: 0; font-family: var(--ff-display);">@Model.TienDaDatCoc.ToString("N0") ₫</p>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <p style="color: var(--silver); font-size: 14px; margin: 0;">Còn lại</p>
+                <p style="color: var(--gold); font-size: 22px; margin: 0; font-family: var(--ff-display);">@((Model.TongTienHopDong - Model.TienDaDatCoc).ToString("N0")) ₫</p>
+            </div>
+
+            @if (Model.TrangThaiBooking == "cho_dat_coc")
+            {
+                <div style="margin-top: 32px;">
+                    <button class="btn-gold" style="width: 100%; border: none; cursor: pointer; font-family: var(--ff-body); padding: 14px 24px; font-size: 12px; letter-spacing: 0.1em;">
+                        Thanh toán cọc ngay
+                    </button>
+                </div>
+            }
+        </div>
+
+        <!-- Album & Review -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px;">
+            <div style="border: 1px solid var(--border); border-radius: 2px; background: var(--surface); padding: 32px; text-align: center;">
+                <p style="font-size: 36px; margin: 0 0 12px 0;">🖼️</p>
+                <h3 style="font-family: var(--ff-display); font-size: 18px; color: var(--white); margin: 0 0 8px 0; font-weight: 400;">Album ảnh</h3>
+                @if (Model.Album != null)
+                {
+                    <p style="color: var(--silver); font-size: 13px; margin: 0 0 16px 0;">
+                        @(Model.Album.TrangThaiMoKhoa == 1 ? "Đã mở khóa" : "Chưa mở khóa")
+                    </p>
+                    <a href="/Customer/Albums" class="btn-ghost">Xem album</a>
+                }
+                else
+                {
+                    <p style="color: var(--silver); font-size: 13px; margin: 0;">Chưa có album cho buổi chụp này</p>
+                }
+            </div>
+            <div style="border: 1px solid var(--border); border-radius: 2px; background: var(--surface); padding: 32px; text-align: center;">
+                <p style="font-size: 36px; margin: 0 0 12px 0;">⭐</p>
+                <h3 style="font-family: var(--ff-display); font-size: 18px; color: var(--white); margin: 0 0 8px 0; font-weight: 400;">Đánh giá</h3>
+                @if (Model.Review != null)
+                {
+                    <p style="color: var(--gold); font-size: 13px; margin: 0 0 16px 0;">
+                        @Model.Review.SoSaoChatLuong/5 ⭐
+                    </p>
+                    <a href="/Customer/Reviews" class="btn-ghost">Xem đánh giá</a>
+                }
+                else if (Model.TrangThaiBooking == "hoan_tat")
+                {
+                    <p style="color: var(--silver); font-size: 13px; margin: 0 0 16px 0;">Bạn chưa đánh giá buổi chụp này</p>
+                    <a href="/Customer/Reviews" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body); text-decoration: none;">Viết đánh giá</a>
+                }
+                else
+                {
+                    <p style="color: var(--silver); font-size: 13px; margin: 0;">Hoàn tất buổi chụp để đánh giá</p>
+                }
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+            <a href="/Booking" class="btn-ghost">
+                ← Quay lại lịch sử đặt lịch
+            </a>
+        </div>
+
+    </div>
+</section>

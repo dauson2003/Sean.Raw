@@ -1,0 +1,129 @@
+@model List<SeanRaw.Web.Models.Booking>
+@{
+    ViewData["Title"] = "Lịch sử đặt lịch";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <p class="section-eyebrow">Quản lý</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Lịch sử đặt lịch</h1>
+        <p class="hero-sub" style="color: var(--silver);">Theo dõi các buổi chụp đã đặt với nhiếp ảnh gia</p>
+    </div>
+</section>
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+        @if (Model != null && Model.Any())
+        {
+            <!-- Bookings Table -->
+            <div style="border: 1px solid var(--border); border-radius: 2px; overflow: hidden; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--surface); border-bottom: 2px solid var(--gold);">
+                            <th style="padding: 16px; text-align: left; color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;">Mã booking</th>
+                            <th style="padding: 16px; text-align: left; color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;">Nhiếp ảnh gia</th>
+                            <th style="padding: 16px; text-align: left; color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;">Gói dịch vụ</th>
+                            <th style="padding: 16px; text-align: left; color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;">Ngày chụp</th>
+                            <th style="padding: 16px; text-align: left; color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;">Địa điểm</th>
+                            <th style="padding: 16px; text-align: left; color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;">Tổng tiền</th>
+                            <th style="padding: 16px; text-align: left; color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;">Trạng thái</th>
+                            <th style="padding: 16px; text-align: center; color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500;">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var booking in Model)
+                        {
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 16px; color: var(--white); font-weight: 500;">#@booking.IdBooking</td>
+                                <td style="padding: 16px; color: var(--white);">@booking.Photographer?.HoTenDayDu</td>
+                                <td style="padding: 16px; color: var(--silver);">@booking.ServicePackage?.TenGoi</td>
+                                <td style="padding: 16px; color: var(--silver);">
+                                    @booking.NgayChupThucTe.ToString("dd/MM/yyyy")<br>
+                                    <span style="font-size: 12px;">🕐 @booking.KhungGioChup</span>
+                                </td>
+                                <td style="padding: 16px; color: var(--silver); max-width: 200px;">@booking.DiaDiemChup</td>
+                                <td style="padding: 16px; color: var(--white); font-weight: 500;">
+                                    @booking.TongTienHopDong.ToString("N0") ₫<br>
+                                    @if (booking.TienDaDatCoc > 0)
+                                    {
+                                        <span style="font-size: 12px; color: var(--silver);">Đã cọc: @booking.TienDaDatCoc.ToString("N0") ₫</span>
+                                    }
+                                </td>
+                                <td style="padding: 16px;">
+                                    @if (booking.TrangThaiBooking == "cho_dat_coc")
+                                    {
+                                        <span style="background: rgba(201, 168, 76, 0.1); color: var(--gold); padding: 6px 12px; border-radius: 2px; font-size: 12px; white-space: nowrap;">Chờ cọc</span>
+                                    }
+                                    else if (booking.TrangThaiBooking == "da_thanh_toan")
+                                    {
+                                        <span style="background: rgba(74, 158, 100, 0.1); color: #4a9e64; padding: 6px 12px; border-radius: 2px; font-size: 12px; white-space: nowrap;">Đã thanh toán</span>
+                                    }
+                                    else if (booking.TrangThaiBooking == "hoan_tat")
+                                    {
+                                        <span style="background: rgba(100, 100, 100, 0.1); color: var(--silver); padding: 6px 12px; border-radius: 2px; font-size: 12px; white-space: nowrap;">Hoàn tất</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="background: rgba(217, 68, 68, 0.1); color: #d94444; padding: 6px 12px; border-radius: 2px; font-size: 12px; white-space: nowrap;">Hủy</span>
+                                    }
+                                </td>
+                                <td style="padding: 16px; text-align: center; white-space: nowrap;">
+                                    @if (booking.TrangThaiBooking == "hoan_tat" && booking.Review == null)
+                                    {
+                                        <a href="/Customer/Reviews" style="color: var(--gold); text-decoration: underline; font-size: 12px; cursor: pointer;">
+                                            Đánh giá
+                                        </a>
+                                    }
+                                    else if (booking.Album != null)
+                                    {
+                                        <a href="/Customer/Albums" style="color: var(--gold); text-decoration: underline; font-size: 12px; cursor: pointer;">
+                                            Xem album
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: var(--silver); font-size: 12px;">—</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Summary -->
+            <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border); text-align: center;">
+                <p style="color: var(--silver); font-size: 14px; margin: 0;">
+                    Tổng cộng: <strong style="color: var(--white);">@Model.Count</strong> buổi chụp
+                </p>
+            </div>
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div style="text-align: center; padding: 100px 24px;">
+                <p style="font-size: 64px; margin: 0 0 20px 0;">📅</p>
+                <h2 style="font-family: var(--ff-display); font-size: 28px; color: var(--white); margin: 0 0 12px 0; font-weight: 400;">
+                    Chưa có lịch đặt nào
+                </h2>
+                <p style="color: var(--silver); font-size: 16px; margin: 0 0 40px 0;">
+                    Đặt lịch ngay với nhiếp ảnh gia để lưu giữ khoảnh khắc của bạn.
+                </p>
+                <a href="/Booking/Create" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body); padding: 12px 24px; font-size: 12px; letter-spacing: 0.1em; text-decoration: none;">
+                    Đặt lịch ngay
+                </a>
+            </div>
+        }
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+            <a href="/Customer/Dashboard" class="btn-ghost">
+                ← Quay lại Dashboard
+            </a>
+        </div>
+
+    </div>
+</section>

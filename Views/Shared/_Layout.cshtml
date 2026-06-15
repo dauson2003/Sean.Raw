@@ -26,7 +26,15 @@
         {
             var userRole = Context.Session.GetString("UserRole");
             <span class="nav-user">@Context.Session.GetString("UserName")</span>
-            
+
+            @if (userRole == "client")
+            {
+                <a href="/Cart" class="btn-ghost" style="position: relative;" title="Giỏ hàng">
+                    🛒
+                    @await Component.InvokeAsync("CartCount")
+                </a>
+            }
+
             @if (userRole == "admin")
             {
                 <a href="/Admin" class="btn-ghost">Dashboard</a>
@@ -55,6 +63,10 @@
     @if (TempData["Success"] != null)
     {
         <div class="toast toast-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="toast toast-error" style="background: rgba(220,50,50,0.12); border: 1px solid #dc3232; color: #ff8a8a;">@TempData["Error"]</div>
     }
     @RenderBody()
 </main>

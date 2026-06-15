@@ -1,7 +1,8 @@
 @model dynamic
+@using SeanRaw.Web.Models
 @{
     ViewData["Title"] = "Cửa hàng";
-    var sanPham = ViewBag.SanPham as List<dynamic>;
+    var sanPham = ViewBag.SanPham as List<Product>;
 }
 
 <!-- ── HERO ──────────────────────────────────────────────── -->
@@ -65,7 +66,7 @@
         {
             @foreach (var sp in sanPham)
             {
-                <div style="border: 1px solid var(--border); padding: 24px; transition: all 0.3s; cursor: pointer;">
+                <div style="border: 1px solid var(--border); padding: 24px; transition: all 0.3s;">
                     <!-- Image Placeholder -->
                     <div style="background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); height: 200px; margin-bottom: 20px; border-radius: 2px; display: flex; align-items: center; justify-content: center;">
                         <span style="color: var(--border); font-size: 14px; letter-spacing: 0.1em;">HÌNH ẢNH</span>
@@ -74,13 +75,13 @@
                     <!-- Product Info -->
                     <div style="margin-bottom: 20px;">
                         <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.08em; margin: 0 0 8px 0; text-transform: uppercase;">
-                            Thiết bị
+                            @sp.HangMayTuongThich
                         </p>
                         <h3 style="font-family: var(--ff-display); font-size: 18px; font-weight: 400; margin: 0 0 12px 0; color: var(--white);">
                             @sp.TenSanPham
                         </h3>
                         <p style="color: var(--white-dim); font-size: 13px; line-height: 1.6; margin: 0;">
-                            @sp.MoTa
+                            @sp.ThongSoChiTiet
                         </p>
                     </div>
 
@@ -89,15 +90,15 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <p style="color: var(--gold); font-size: 20px; font-weight: 300; margin: 0;">
-                                    @sp.Gia.ToString("N0") ₫
+                                    @sp.GiaBanNiemYet.ToString("N0") ₫
                                 </p>
                                 <p style="color: var(--silver); font-size: 12px; margin: 4px 0 0 0;">
-                                    @if (sp.TonKho > 0) 
-                                    { 
-                                        @:Còn @sp.TonKho cái
-                                    } 
-                                    else 
-                                    { 
+                                    @if (sp.SoLuongTonKho > 0)
+                                    {
+                                        @:Còn @sp.SoLuongTonKho cái
+                                    }
+                                    else
+                                    {
                                         <span style="color: #d94444;">Hết hàng</span>
                                     }
                                 </p>
@@ -106,11 +107,15 @@
                     </div>
 
                     <!-- Add to Cart -->
-                    @if (sp.TonKho > 0)
+                    @if (sp.SoLuongTonKho > 0)
                     {
-                        <button class="btn-gold" style="width: 100%; border: none; cursor: pointer; font-family: var(--ff-body); padding: 10px 16px; font-size: 12px; letter-spacing: 0.1em;">
-                            Thêm vào giỏ
-                        </button>
+                        <form method="post" action="/Cart/Add">
+                            <input type="hidden" name="productId" value="@sp.IdSanPham" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <button type="submit" class="btn-gold" style="width: 100%; border: none; cursor: pointer; font-family: var(--ff-body); padding: 10px 16px; font-size: 12px; letter-spacing: 0.1em;">
+                                Thêm vào giỏ
+                            </button>
+                        </form>
                     }
                     else
                     {

@@ -1,0 +1,111 @@
+@model List<SeanRaw.Web.Models.Booking>
+@{
+    ViewData["Title"] = "Lịch làm việc";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <p class="section-eyebrow">Quản lý</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Lịch làm việc</h1>
+        <p class="hero-sub" style="color: var(--silver);">Theo dõi các buổi chụp đã được sắp xếp</p>
+    </div>
+</section>
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+        @if (Model != null && Model.Any())
+        {
+            <div style="display: flex; flex-direction: column; gap: 24px;">
+                @foreach (var booking in Model)
+                {
+                    <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface); display: grid; grid-template-columns: 120px 1fr auto; gap: 24px; align-items: center;">
+
+                        <!-- Date Block -->
+                        <div style="text-align: center; border-right: 1px solid var(--border); padding-right: 24px;">
+                            <p style="font-family: var(--ff-display); font-size: 32px; color: var(--gold); margin: 0; font-weight: 300;">
+                                @booking.NgayChupThucTe.ToString("dd")
+                            </p>
+                            <p style="color: var(--silver); font-size: 13px; margin: 4px 0 0 0; text-transform: uppercase; letter-spacing: 0.08em;">
+                                @booking.NgayChupThucTe.ToString("MM/yyyy")
+                            </p>
+                        </div>
+
+                        <!-- Info -->
+                        <div>
+                            <h3 style="font-family: var(--ff-display); font-size: 20px; color: var(--white); margin: 0 0 8px 0; font-weight: 400;">
+                                @booking.ServicePackage?.TenGoi
+                            </h3>
+                            <p style="color: var(--silver); font-size: 13px; margin: 0 0 4px 0;">
+                                👤 @booking.KhachHang?.HoTenDayDu &nbsp;•&nbsp; 📞 @booking.KhachHang?.SoDienThoai
+                            </p>
+                            <p style="color: var(--silver); font-size: 13px; margin: 0 0 4px 0;">
+                                🕐 @booking.KhungGioChup
+                            </p>
+                            <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                                📍 @booking.DiaDiemChup
+                            </p>
+                        </div>
+
+                        <!-- Status -->
+                        <div style="text-align: right;">
+                            @if (booking.TrangThaiBooking == "cho_dat_coc")
+                            {
+                                <span style="background: rgba(201, 168, 76, 0.1); color: var(--gold); padding: 6px 12px; border-radius: 2px; font-size: 12px; white-space: nowrap;">Chờ cọc</span>
+                            }
+                            else if (booking.TrangThaiBooking == "da_thanh_toan")
+                            {
+                                <span style="background: rgba(74, 158, 100, 0.1); color: #4a9e64; padding: 6px 12px; border-radius: 2px; font-size: 12px; white-space: nowrap;">Đã thanh toán</span>
+                            }
+                            else if (booking.TrangThaiBooking == "hoan_tat")
+                            {
+                                <span style="background: rgba(100, 100, 100, 0.1); color: var(--silver); padding: 6px 12px; border-radius: 2px; font-size: 12px; white-space: nowrap;">Hoàn tất</span>
+                            }
+                            else
+                            {
+                                <span style="background: rgba(217, 68, 68, 0.1); color: #d94444; padding: 6px 12px; border-radius: 2px; font-size: 12px; white-space: nowrap;">Hủy</span>
+                            }
+                            <p style="color: var(--gold); font-size: 16px; margin: 12px 0 0 0; font-family: var(--ff-display);">
+                                @booking.TongTienHopDong.ToString("N0") ₫
+                            </p>
+                        </div>
+
+                    </div>
+                }
+            </div>
+
+            <!-- Info -->
+            <div style="text-align: center; margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                <p style="color: var(--silver); font-size: 14px; margin: 0;">
+                    Tổng cộng: <strong style="color: var(--white);">@Model.Count</strong> buổi chụp
+                </p>
+            </div>
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div style="text-align: center; padding: 100px 24px;">
+                <p style="font-size: 64px; margin: 0 0 20px 0;">📅</p>
+                <h2 style="font-family: var(--ff-display); font-size: 28px; color: var(--white); margin: 0 0 12px 0; font-weight: 400;">
+                    Chưa có lịch chụp nào
+                </h2>
+                <p style="color: var(--silver); font-size: 16px; margin: 0 0 40px 0;">
+                    Các buổi chụp được khách hàng đặt sẽ hiển thị tại đây.
+                </p>
+                <a href="/Photographer/Dashboard" class="btn-ghost">
+                    ← Quay lại Dashboard
+                </a>
+            </div>
+        }
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+            <a href="/Photographer/Dashboard" class="btn-ghost">
+                ← Quay lại Dashboard
+            </a>
+        </div>
+
+    </div>
+</section>

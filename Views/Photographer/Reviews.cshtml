@@ -1,0 +1,107 @@
+@model List<SeanRaw.Web.Models.Review>
+@{
+    ViewData["Title"] = "Đánh giá từ khách hàng";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <p class="section-eyebrow">Phản hồi</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Đánh giá từ khách hàng</h1>
+        <p class="hero-sub" style="color: var(--silver);">Xem nhận xét và xếp hạng từ các khách hàng đã chụp ảnh</p>
+    </div>
+</section>
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 900px; margin: 0 auto;">
+
+        <!-- Average Rating Summary -->
+        <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface); margin-bottom: 60px; text-align: center;">
+            <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                ⭐ Điểm đánh giá trung bình
+            </p>
+            <p style="font-family: var(--ff-display); font-size: 48px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                @ViewBag.AverageRating <span style="font-size: 24px; color: var(--silver);">/ 5</span>
+            </p>
+            <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                Dựa trên @(Model?.Count ?? 0) đánh giá
+            </p>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div style="display: flex; flex-direction: column; gap: 32px;">
+                @foreach (var review in Model)
+                {
+                    <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+
+                        <!-- Header -->
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
+                            <div>
+                                <h3 style="font-family: var(--ff-display); font-size: 20px; color: var(--white); margin: 0 0 8px 0; font-weight: 400;">
+                                    @review.Booking?.KhachHang?.HoTenDayDu
+                                </h3>
+                                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                                    Buổi #@review.IdBooking • @review.NgayTaoPhanHoi.ToString("dd/MM/yyyy")
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Stars -->
+                        <div style="margin-bottom: 24px;">
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                @for (int i = 0; i < review.SoSaoChatLuong; i++)
+                                {
+                                    <span style="font-size: 20px;">⭐</span>
+                                }
+                                @for (int i = review.SoSaoChatLuong; i < 5; i++)
+                                {
+                                    <span style="font-size: 20px; opacity: 0.3;">⭐</span>
+                                }
+                                <span style="color: var(--gold); font-size: 14px; margin-left: 8px;">@review.SoSaoChatLuong/5</span>
+                            </div>
+                        </div>
+
+                        <!-- Comment -->
+                        <p style="color: var(--white); font-size: 15px; line-height: 1.7; margin: 0;">
+                            @review.NoiDungNhanXet
+                        </p>
+
+                    </div>
+                }
+            </div>
+
+            <!-- Info -->
+            <div style="text-align: center; margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                <p style="color: var(--silver); font-size: 14px; margin: 0;">
+                    Tổng cộng: <strong style="color: var(--white);">@Model.Count</strong> đánh giá
+                </p>
+            </div>
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div style="text-align: center; padding: 100px 24px;">
+                <p style="font-size: 64px; margin: 0 0 20px 0;">⭐</p>
+                <h2 style="font-family: var(--ff-display); font-size: 28px; color: var(--white); margin: 0 0 12px 0; font-weight: 400;">
+                    Chưa có đánh giá nào
+                </h2>
+                <p style="color: var(--silver); font-size: 16px; margin: 0 0 40px 0;">
+                    Sau khi khách hàng hoàn tất buổi chụp, đánh giá sẽ hiển thị tại đây.
+                </p>
+                <a href="/Photographer/Dashboard" class="btn-ghost">
+                    ← Quay lại Dashboard
+                </a>
+            </div>
+        }
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+            <a href="/Photographer/Dashboard" class="btn-ghost">
+                ← Quay lại Dashboard
+            </a>
+        </div>
+
+    </div>
+</section>
