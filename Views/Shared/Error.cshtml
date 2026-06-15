@@ -1,25 +1,76 @@
 ﻿@model ErrorViewModel
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "Lỗi";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<!-- ── ERROR PAGE ────────────────────────────────────────── -->
+<section style="padding: 140px 64px; min-height: 90vh; display: flex; align-items: center; justify-content: center; text-align: center;">
+    
+    <div style="max-width: 600px;">
+        
+        <!-- Error Code -->
+        <div style="margin-bottom: 48px;">
+            <p style="font-size: 72px; font-weight: 300; font-family: var(--ff-display); color: var(--gold); margin: 0; line-height: 1;">
+                ⚠
+            </p>
+        </div>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+        <!-- Error Title -->
+        <h1 class="hero-title" style="margin-bottom: 24px; font-size: 48px;">
+            Có lỗi xảy ra
+        </h1>
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+        <!-- Error Description -->
+        <p class="hero-sub" style="margin-bottom: 48px; color: var(--white-dim); font-size: 16px;">
+            Xin lỗi, điều gì đó không hoạt động đúng. Chúng tôi đã ghi nhận lỗi này và sẽ khắc phục sớm.
+        </p>
+
+        <!-- Request ID (Development) -->
+        @if (Model?.ShowRequestId ?? false)
+        {
+            <div style="background: var(--surface); border: 1px solid var(--border); padding: 16px 24px; border-radius: 2px; margin-bottom: 48px; text-align: left;">
+                <p style="font-size: 12px; color: var(--silver); letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 8px 0;">
+                    Request ID
+                </p>
+                <p style="font-family: var(--ff-mono); font-size: 13px; color: var(--gold); word-break: break-all; margin: 0;">
+                    @Model?.RequestId
+                </p>
+            </div>
+        }
+
+        <!-- Development Notice -->
+        @if (Context.Request.Host.Host == "localhost" || Context.Request.Host.Host == "127.0.0.1")
+        {
+            <div style="background: rgba(201, 168, 76, 0.05); border: 1px solid rgba(201, 168, 76, 0.2); padding: 24px; border-radius: 2px; text-align: left; margin-bottom: 48px;">
+                <p style="color: var(--gold); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 12px 0; font-weight: 500;">
+                    🔧 Chế độ phát triển
+                </p>
+                <p style="color: var(--white-dim); font-size: 14px; margin: 0;">
+                    Bạn đang chạy ở chế độ phát triển. Chi tiết lỗi sẽ được hiển thị ở đây để giúp gỡ lỗi.
+                </p>
+            </div>
+        }
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <a href="/" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body);">
+                Quay lại trang chủ
+            </a>
+            <a href="javascript:history.back();" class="btn-ghost">
+                Quay lại
+            </a>
+        </div>
+
+        <!-- Support -->
+        <div style="margin-top: 64px; padding-top: 48px; border-top: 1px solid var(--border);">
+            <p style="color: var(--silver); font-size: 14px; margin-bottom: 12px;">
+                Nếu vấn đề vẫn tiếp tục, vui lòng liên hệ hỗ trợ
+            </p>
+            <a href="mailto:contact@sean.raw" style="color: var(--gold); text-decoration: underline; font-size: 14px;">
+                contact@sean.raw
+            </a>
+        </div>
+
+    </div>
+
+</section>

@@ -53,6 +53,13 @@ namespace SeanRaw.Web.Data
                 .HasForeignKey(b => b.IdPhotographer)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // ── Booking → ServicePackage (FK: id_goi_dich_vu) ────
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.ServicePackage)
+                .WithMany(sp => sp.Bookings)
+                .HasForeignKey(b => b.IdGoiDichVu)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // ── 1:1 PhotographerProfile ↔ User ───────────────────
             modelBuilder.Entity<PhotographerProfile>()
                 .HasOne(p => p.User)

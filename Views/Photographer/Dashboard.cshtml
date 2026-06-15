@@ -1,0 +1,168 @@
+@model List<SeanRaw.Web.Models.Booking>
+@{
+    ViewData["Title"] = "Dashboard - Nhiếp ảnh gia";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <p class="section-eyebrow">Bảng điều khiển</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Dashboard Nhiếp ảnh gia</h1>
+    </div>
+</section>
+
+<!-- ── STATS CARDS ────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        
+        <!-- Quick Stats -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 60px;">
+            
+            <!-- Total Bookings -->
+            <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    📅 Tổng số buổi chụp
+                </p>
+                <p style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    @ViewBag.TotalBookings
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Toàn bộ buổi chụp
+                </p>
+            </div>
+
+            <!-- Pending Bookings -->
+            <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    ⏳ Đang chờ xác nhận
+                </p>
+                <p style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    @ViewBag.PendingBookings
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Buổi chụp cần xác nhận
+                </p>
+            </div>
+
+            <!-- Completed Bookings -->
+            <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    ✅ Hoàn tất
+                </p>
+                <p style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    @ViewBag.CompletedBookings
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Buổi chụp đã hoàn tất
+                </p>
+            </div>
+
+            <!-- Total Revenue -->
+            <div style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    💰 Doanh thu
+                </p>
+                <p style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    @(ViewBag.TotalRevenue > 0 ? ((long)ViewBag.TotalRevenue).ToString("N0") : "0") ₫
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Từ buổi chụp hoàn tất
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Menu Actions -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 60px;">
+            <a href="/Photographer/Schedule" style="border: 1px solid var(--border); padding: 24px; text-align: center; display: block; text-decoration: none; color: var(--white); transition: all 0.3s; border-radius: 2px;">
+                <p style="font-size: 24px; margin: 0 0 8px 0;">📅</p>
+                <p style="font-size: 14px; font-weight: 500; margin: 0;">Xem lịch</p>
+                <p style="font-size: 12px; color: var(--silver); margin: 4px 0 0 0;">Quản lý thời gian</p>
+            </a>
+            <a href="/Photographer/Earnings" style="border: 1px solid var(--border); padding: 24px; text-align: center; display: block; text-decoration: none; color: var(--white); transition: all 0.3s; border-radius: 2px;">
+                <p style="font-size: 24px; margin: 0 0 8px 0;">📊</p>
+                <p style="font-size: 14px; font-weight: 500; margin: 0;">Thống kê doanh thu</p>
+                <p style="font-size: 12px; color: var(--silver); margin: 4px 0 0 0;">Xem chi tiết doanh thu</p>
+            </a>
+            <a href="/Photographer/Albums" style="border: 1px solid var(--border); padding: 24px; text-align: center; display: block; text-decoration: none; color: var(--white); transition: all 0.3s; border-radius: 2px;">
+                <p style="font-size: 24px; margin: 0 0 8px 0;">🖼️</p>
+                <p style="font-size: 14px; font-weight: 500; margin: 0;">Quản lý album</p>
+                <p style="font-size: 12px; color: var(--silver); margin: 4px 0 0 0;">Tải lên & quản lý ảnh</p>
+            </a>
+            <a href="/Photographer/Profile" style="border: 1px solid var(--border); padding: 24px; text-align: center; display: block; text-decoration: none; color: var(--white); transition: all 0.3s; border-radius: 2px;">
+                <p style="font-size: 24px; margin: 0 0 8px 0;">👤</p>
+                <p style="font-size: 14px; font-weight: 500; margin: 0;">Hồ sơ</p>
+                <p style="font-size: 12px; color: var(--silver); margin: 4px 0 0 0;">Cập nhật thông tin</p>
+            </a>
+        </div>
+
+        <!-- Recent Bookings -->
+        <div style="border-top: 1px solid var(--border); padding-top: 60px;">
+            <h2 class="section-title" style="margin-bottom: 40px;">Buổi chụp gần đây</h2>
+
+            @if (Model != null && Model.Any())
+            {
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border);">
+                                <th style="text-align: left; padding: 16px 0; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">ID</th>
+                                <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Khách hàng</th>
+                                <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Ngày chụp</th>
+                                <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Gói dịch vụ</th>
+                                <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Giá tiền</th>
+                                <th style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var booking in Model)
+                            {
+                                <tr style="border-bottom: 1px solid var(--border);">
+                                    <td style="padding: 16px 0; color: var(--white);">@booking.IdBooking</td>
+                                    <td style="padding: 16px 12px; color: var(--white);">@booking.KhachHang?.HoTenDayDu</td>
+                                    <td style="padding: 16px 12px; color: var(--white);">@booking.NgayChupThucTe.ToString("dd/MM/yyyy")</td>
+                                    <td style="padding: 16px 12px; color: var(--white);">@booking.ServicePackage?.TenGoi</td>
+                                    <td style="padding: 16px 12px; color: var(--gold);">@booking.TongTienHopDong.ToString("N0") ₫</td>
+                                    <td style="padding: 16px 12px;">
+                                        @if (booking.TrangThaiBooking == "cho_dat_coc")
+                                        {
+                                            <span style="background: rgba(201, 168, 76, 0.1); color: var(--gold); padding: 4px 8px; border-radius: 2px; font-size: 12px;">Chờ cọc</span>
+                                        }
+                                        else if (booking.TrangThaiBooking == "da_thanh_toan")
+                                        {
+                                            <span style="background: rgba(74, 158, 100, 0.1); color: #4a9e64; padding: 4px 8px; border-radius: 2px; font-size: 12px;">Đã thanh toán</span>
+                                        }
+                                        else if (booking.TrangThaiBooking == "hoan_tat")
+                                        {
+                                            <span style="background: rgba(100, 100, 100, 0.1); color: var(--silver); padding: 4px 8px; border-radius: 2px; font-size: 12px;">Hoàn tất</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="background: rgba(217, 68, 68, 0.1); color: #d94444; padding: 4px 8px; border-radius: 2px; font-size: 12px;">Hủy</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div style="text-align: center; padding: 60px 24px;">
+                    <p style="color: var(--silver); font-size: 16px; margin: 0;">
+                        Chưa có buổi chụp nào
+                    </p>
+                </div>
+            }
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+            <a href="/" class="btn-ghost">
+                ← Quay lại trang chủ
+            </a>
+        </div>
+
+    </div>
+</section>

@@ -16,16 +16,30 @@
     <ul class="nav-links">
         <li><a href="/">Trang chủ</a></li>
         <li><a href="/Home/Store">Cửa hàng</a></li>
-        <li><a href="/Booking/Create">Đặt lịch</a></li>
-        @if (Context.Session.GetString("UserRole") == "admin")
+        @if (Context.Session.GetString("UserId") == null)
         {
-            <li><a href="/Admin">Admin</a></li>
+            <li><a href="/Booking/Create">Đặt lịch</a></li>
         }
     </ul>
     <div class="nav-auth">
         @if (Context.Session.GetString("UserId") != null)
         {
+            var userRole = Context.Session.GetString("UserRole");
             <span class="nav-user">@Context.Session.GetString("UserName")</span>
+            
+            @if (userRole == "admin")
+            {
+                <a href="/Admin" class="btn-ghost">Dashboard</a>
+            }
+            else if (userRole == "photographer")
+            {
+                <a href="/Photographer/Dashboard" class="btn-ghost">Dashboard</a>
+            }
+            else
+            {
+                <a href="/Customer/Dashboard" class="btn-ghost">Tài khoản</a>
+            }
+            
             <a href="/Account/Logout" class="btn-ghost">Đăng xuất</a>
         }
         else

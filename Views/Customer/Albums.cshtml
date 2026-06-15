@@ -1,0 +1,116 @@
+@model List<SeanRaw.Web.Models.Album>
+@{
+    ViewData["Title"] = "Thư viện ảnh";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <p class="section-eyebrow">Bảo quản</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Thư viện ảnh của tôi</h1>
+        <p class="hero-sub" style="color: var(--silver);">Xem và quản lý tất cả ảnh từ các buổi chụp</p>
+    </div>
+</section>
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+        @if (Model != null && Model.Any())
+        {
+            <!-- Album Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px; margin-bottom: 60px;">
+                @foreach (var album in Model)
+                {
+                    <div style="border: 1px solid var(--border); border-radius: 2px; overflow: hidden; transition: all 0.3s; cursor: pointer;">
+                        <!-- Album Thumbnail -->
+                        <div style="height: 200px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); display: flex; align-items: center; justify-content: center;">
+                            <span style="color: var(--border); font-size: 48px;">🖼️</span>
+                        </div>
+
+                        <!-- Album Info -->
+                        <div style="padding: 24px;">
+                            <!-- Title -->
+                            <h3 style="font-family: var(--ff-display); font-size: 18px; color: var(--white); margin: 0 0 12px 0; font-weight: 400;">
+                                Album từ buổi #@album.IdBooking
+                            </h3>
+
+                            <!-- Photographer -->
+                            <p style="color: var(--silver); font-size: 13px; margin: 0 0 12px 0;">
+                                📷 @album.Booking?.Photographer?.HoTenDayDu
+                            </p>
+
+                            <!-- Date -->
+                            <p style="color: var(--silver); font-size: 13px; margin: 0 0 12px 0;">
+                                📅 @album.Booking?.NgayChupThucTe.ToString("dd/MM/yyyy")
+                            </p>
+
+                            <!-- Status -->
+                            <div style="margin-bottom: 16px;">
+                                @if (album.TrangThaiMoKhoa == 1)
+                                {
+                                    <span style="background: rgba(74, 158, 100, 0.1); color: #4a9e64; padding: 4px 8px; border-radius: 2px; font-size: 12px;">Đã mở khóa</span>
+                                }
+                                else
+                                {
+                                    <span style="background: rgba(201, 168, 76, 0.1); color: var(--gold); padding: 4px 8px; border-radius: 2px; font-size: 12px;">Chưa mở khóa</span>
+                                }
+                            </div>
+
+                            <!-- Actions -->
+                            <div style="display: flex; gap: 8px;">
+                                <a href="/Customer/Albums/@album.IdAlbum" class="btn-gold" style="flex: 1; text-align: center; padding: 10px 16px; border: none; cursor: pointer; font-family: var(--ff-body); font-size: 12px; letter-spacing: 0.1em;">
+                                    Xem chi tiết
+                                </a>
+                                @if (album.TrangThaiMoKhoa == 1)
+                                {
+                                    <button style="border: 1px solid var(--border); color: var(--silver); padding: 10px 16px; background: transparent; font-family: var(--ff-body); cursor: pointer; font-size: 12px; letter-spacing: 0.1em;">
+                                        Tải xuống
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Pagination or Info -->
+            <div style="text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+                <p style="color: var(--silver); font-size: 14px; margin: 0;">
+                    Tổng cộng: <strong style="color: var(--white);">@Model.Count</strong> album
+                </p>
+            </div>
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div style="text-align: center; padding: 100px 24px;">
+                <p style="font-size: 64px; margin: 0 0 20px 0;">🖼️</p>
+                <h2 style="font-family: var(--ff-display); font-size: 28px; color: var(--white); margin: 0 0 12px 0; font-weight: 400;">
+                    Chưa có ảnh nào
+                </h2>
+                <p style="color: var(--silver); font-size: 16px; margin: 0 0 40px 0;">
+                    Sau khi hoàn tất buổi chụp, thợ ảnh sẽ tải lên ảnh của bạn ở đây.
+                </p>
+                <a href="/Customer/Dashboard" class="btn-ghost">
+                    ← Quay lại Dashboard
+                </a>
+            </div>
+        }
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+            <a href="/Customer/Dashboard" class="btn-ghost">
+                ← Quay lại Dashboard
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── STYLES ────────────────────────────────────────────── -->
+<style>
+    [style*="cursor: pointer"]:hover {
+        border-color: var(--gold) !important;
+    }
+</style>

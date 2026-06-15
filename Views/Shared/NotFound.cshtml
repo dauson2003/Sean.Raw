@@ -1,0 +1,48 @@
+@{
+    ViewData["Title"] = "Không tìm thấy trang";
+}
+
+<section style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px 24px;">
+    <div style="text-align: center; max-width: 600px;">
+
+        <!-- Large 404 -->
+        <h1
+            style="font-family: var(--ff-display); font-size: 120px; color: var(--gold); margin: 0 0 20px 0; font-weight: 300;">
+            404</h1>
+
+            <!-- Title -->
+            <h2
+                style="font-family: var(--ff-display); font-size: 32px; color: var(--white); margin: 0 0 16px 0; font-weight: 400;">
+                Không tìm thấy trang
+            </h2>
+
+            <!-- Description -->
+            <p style="color: var(--silver); font-size: 16px; line-height: 1.6; margin: 0 0 40px 0;">
+                Trang bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.
+                <br /><br />
+                Vui lòng kiểm tra lại URL hoặc quay lại trang chủ.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="/" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body);">
+                    ← Trang chủ
+                </a>
+                <a href="javascript:history.back()" class="btn-ghost">
+                    Quay lại
+                </a>
+            </div>
+
+            <!-- Contact Support -->
+            <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border);">
+                <p style="color: var(--silver); font-size: 13px; margin: 0 0 12px 0;">
+                    Cần giúp đỡ?
+                </p>
+                <a href="mailto:support@seanraw.com"
+                   style="color: var(--gold); text-decoration: underline; font-size: 14px;">
+                    Liên hệ hỗ trợ →
+                </a>
+            </div>
+
+        </div>
+    </section>

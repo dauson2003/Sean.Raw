@@ -16,12 +16,13 @@ namespace SeanRaw.Web.Controllers
         // ── GET / ── Trang chủ ───────────────────────────────
         public async Task<IActionResult> Index()
         {
-            ViewBag.GoiDichVu   = await _db.ServicePackages.ToListAsync();
-            ViewBag.SanPham     = await _db.Products
+            ViewBag.GoiDichVu = await _db.ServicePackages.ToListAsync();
+            ViewBag.SanPham = await _db.Products
                                     .Where(p => !p.IsDeleted)
+                                    .OrderBy(p => p.IdSanPham)
                                     .Take(4)
                                     .ToListAsync();
-            ViewBag.UserName    = HttpContext.Session.GetString("UserName");
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
             return View();
         }
 
@@ -33,95 +34,41 @@ namespace SeanRaw.Web.Controllers
                 .ToListAsync();
             return View(products);
         }
-    }
 
-    // ─────────────────────────────────────────────────────────
-    // Admin Controller
-    // ─────────────────────────────────────────────────────────
-    public class AdminController : Controller
-    {
-        private readonly AppDbContext _db;
-
-        public AdminController(AppDbContext db)
+        // ── GET /Home/FixPasswords ── Fix test user passwords ─
+        // Tạm thời dùng để hash mật khẩu các user test
+        // Chỉ chạy lần đầu, sau đó xóa endpoint này
+        [HttpGet]
+        public async Task<IActionResult> FixPasswords()
         {
-            _db = db;
-        }
-
-        private bool IsAdmin() =>
-            HttpContext.Session.GetString("UserRole") == "admin";
-
-        // ── GET /Admin ── Dashboard tổng quan ───────────────
-        public async Task<IActionResult> Index()
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Account");
-
-            ViewBag.TongNguoiDung   = await _db.Users.CountAsync();
-            ViewBag.TongBooking     = await _db.Bookings.CountAsync();
-            ViewBag.BookingChoXuLy  = await _db.Bookings
-                                        .CountAsync(b => b.TrangThaiBooking == "cho_dat_coc");
-            ViewBag.ThoChoXacThuc   = await _db.PhotographerProfiles
-                                        .CountAsync(p => p.TrangThaiXacThuc == "cho_duyet");
-
-            var bookings = await _db.Bookings
-                .Include(b => b.KhachHang)
-                .Include(b => b.Photographer)
-                .Include(b => b.ServicePackage)
-                .OrderByDescending(b => b.IdBooking)
-                .Take(10)
-                .ToListAsync();
-
-            return View(bookings);
-        }
-
-        // ── GET /Admin/Photographers ── Quản lý thợ ảnh ─────
-        public async Task<IActionResult> Photographers()
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Account");
-
-            var list = await _db.PhotographerProfiles
-                .Include(p => p.User)
-                .OrderBy(p => p.TrangThaiXacThuc)
-                .ToListAsync();
-
-            return View(list);
-        }
-
-        // ── POST /Admin/ApprovePhotographer ─────────────────
-        [HttpPost]
-        public async Task<IActionResult> ApprovePhotographer(int id, string action)
-        {
-            if (!IsAdmin()) return Forbid();
-
-            var profile = await _db.PhotographerProfiles.FindAsync(id);
-            if (profile == null) return NotFound();
-
-            profile.TrangThaiXacThuc = action == "approve" ? "da_xac_thuc" : "tu_choi";
-
-            // Ghi audit log
-            _db.AuditLogs.Add(new Models.AuditLog
+            if (!HttpContext.Request.Host.Host.Contains("localhost") &&
+                !HttpContext.Request.Host.Host.Contains("127.0.0.1"))
             {
-                IdNguoiDung         = HttpContext.Session.GetString("UserId")!,
-                HanhVi              = action == "approve" ? "APPROVE_PHOTOGRAPHER" : "REJECT_PHOTOGRAPHER",
-                DoiTuongBiTacDong   = "photographer_profiles",
-                IdDoiTuong          = id.ToString(),
-                DiaChiIp            = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown"
-            });
+                return BadRequest("Chỉ chạy trên localhost");
+            }
 
-            await _db.SaveChangesAsync();
-            TempData["Success"] = action == "approve" ? "Đã duyệt thợ ảnh!" : "Đã từ chối.";
-            return RedirectToAction("Photographers");
-        }
+            var users = await _db.Users.ToListAsync();
+            int fixedCount = 0;
 
-        // ── GET /Admin/Users ── Quản lý người dùng ──────────
-        public async Task<IActionResult> Users()
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Account");
+            foreach (var user in users)
+            {
+                // Kiểm tra nếu password chưa được hash BCrypt (không bắt đầu với $2)
+                if (!user.MatKhauBam.StartsWith("$2"))
+                {
+                    // Hash lại mật khẩu (giả sử mật khẩu hiện tại đó là plaintext)
+                    // Mật khẩu mặc định là "123456" cho test
+                    user.MatKhauBam = BCrypt.Net.BCrypt.HashPassword("123456");
+                    _db.Users.Update(user);
+                    fixedCount++;
+                }
+            }
 
-            var users = await _db.Users
-                .OrderByDescending(u => u.NgayTaoTaiKhoan)
-                .ToListAsync();
+            if (fixedCount > 0)
+            {
+                await _db.SaveChangesAsync();
+            }
 
-            return View(users);
+            return Ok($"Đã fix {fixedCount} user(s). Bây giờ có thể đăng nhập với mật khẩu: 123456");
         }
     }
 }

@@ -1,0 +1,186 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<!-- ── ADMIN HEADER ──────────────────────────────────────── -->
+<section
+    style="padding: 100px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <p class="section-eyebrow">Quản lý</p>
+        <h1 class="hero-title">Admin Dashboard</h1>
+        <p class="hero-sub" style="color: var(--silver);">
+            Quản lý đặt lịch, sản phẩm, khách hàng và nội dung trang web
+        </p>
+    </div>
+</section>
+
+<!-- ── MAIN CONTENT ──────────────────────────────────────── -->
+<section style="padding: 80px 64px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+        <!-- Quick Stats -->
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 60px;">
+
+            <!-- Stat Card: Bookings -->
+            <div
+                style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p
+                    style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    📅 Đặt lịch
+                </p>
+                <p
+                    style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    12
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Buổi chụp đang chờ xử lý
+                </p>
+            </div>
+
+            <!-- Stat Card: Products -->
+            <div
+                style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p
+                    style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    📦 Sản phẩm
+                </p>
+                <p
+                    style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    45
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Phụ kiện trong kho
+                </p>
+            </div>
+
+            <!-- Stat Card: Revenue -->
+            <div
+                style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p
+                    style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    💰 Doanh thu
+                </p>
+                <p
+                    style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    125M ₫
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Tháng này
+                </p>
+            </div>
+
+            <!-- Stat Card: Users -->
+            <div
+                style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; background: var(--surface);">
+                <p
+                    style="color: var(--gold); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 12px 0;">
+                    👥 Khách hàng
+                </p>
+                <p
+                    style="font-family: var(--ff-display); font-size: 36px; color: var(--white); margin: 0 0 8px 0; font-weight: 300;">
+                    284
+                </p>
+                <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                    Tài khoản đã đăng ký
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Admin Menu -->
+        <div style="border-top: 1px solid var(--border); padding-top: 60px;">
+            <h2 class="section-title" style="margin-bottom: 40px;">Quản lý chức năng</h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+
+                <!-- Booking Management -->
+                <a href="/Admin/Bookings"
+                   style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; display: block; transition: all 0.3s; text-decoration: none; background: var(--surface); hover {border-color: var(--gold);}">
+                    <p style="font-size: 28px; margin: 0 0 12px 0;">📅</p>
+                    <h3
+                        style="font-family: var(--ff-display); font-size: 20px; color: var(--white); margin: 0 0 8px 0; font-weight: 400;">
+                        Quản lý đặt lịch
+                    </h3>
+                    <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                        Xem, chỉnh sửa, và xác nhận các đơn đặt lịch từ khách hàng
+                    </p>
+                </a>
+
+                <!-- Product Management -->
+                <a href="/Admin/Products"
+                   style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; display: block; transition: all 0.3s; text-decoration: none; background: var(--surface);">
+                    <p style="font-size: 28px; margin: 0 0 12px 0;">📦</p>
+                    <h3
+                        style="font-family: var(--ff-display); font-size: 20px; color: var(--white); margin: 0 0 8px 0; font-weight: 400;">
+                        Quản lý sản phẩm
+                    </h3>
+                    <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                        Thêm, chỉnh sửa, xóa phụ kiện và quản lý kho hàng
+                    </p>
+                </a>
+
+                <!-- User Management -->
+                <a href="/Admin/Users"
+                   style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; display: block; transition: all 0.3s; text-decoration: none; background: var(--surface);">
+                    <p style="font-size: 28px; margin: 0 0 12px 0;">👥</p>
+                    <h3
+                        style="font-family: var(--ff-display); font-size: 20px; color: var(--white); margin: 0 0 8px 0; font-weight: 400;">
+                        Quản lý người dùng
+                    </h3>
+                    <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                        Xem tài khoản khách hàng, cấp quyền, và quản lý vai trò
+                    </p>
+                </a>
+
+                <!-- Service Packages -->
+                <a href="/Admin/Packages"
+                   style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; display: block; transition: all 0.3s; text-decoration: none; background: var(--surface);">
+                    <p style="font-size: 28px; margin: 0 0 12px 0;">💎</p>
+                    <h3
+                        style="font-family: var(--ff-display); font-size: 20px; color: var(--white); margin: 0 0 8px 0; font-weight: 400;">
+                        Gói dịch vụ
+                    </h3>
+                    <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                        Quản lý các gói chụp ảnh, giá cả, và quyền lợi
+                    </p>
+                </a>
+
+                <!-- Reports -->
+                <a href="/Admin/Reports"
+                   style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; display: block; transition: all 0.3s; text-decoration: none; background: var(--surface);">
+                    <p style="font-size: 28px; margin: 0 0 12px 0;">📊</p>
+                    <h3
+                        style="font-family: var(--ff-display); font-size: 20px; color: var(--white); margin: 0 0 8px 0; font-weight: 400;">
+                        Báo cáo & thống kê
+                    </h3>
+                    <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                        Xem báo cáo doanh thu, lượt đặt lịch, và hiệu suất
+                    </p>
+                </a>
+
+                <!-- Settings -->
+                <a href="/Admin/Settings"
+                   style="border: 1px solid var(--border); padding: 32px; border-radius: 2px; display: block; transition: all 0.3s; text-decoration: none; background: var(--surface);">
+                    <p style="font-size: 28px; margin: 0 0 12px 0;">⚙️</p>
+                    <h3
+                        style="font-family: var(--ff-display); font-size: 20px; color: var(--white); margin: 0 0 8px 0; font-weight: 400;">
+                        Cài đặt hệ thống
+                    </h3>
+                    <p style="color: var(--silver); font-size: 13px; margin: 0;">
+                        Cấu hình email, thanh toán, và các tùy chọn khác
+                    </p>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Footer Action -->
+        <div style="border-top: 1px solid var(--border); margin-top: 60px; padding-top: 40px; text-align: center;">
+            <a href="/" class="btn-ghost">
+                ← Quay lại trang chủ
+            </a>
+        </div>
+
+    </div>
+</section>

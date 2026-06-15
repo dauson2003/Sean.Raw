@@ -1,0 +1,152 @@
+@model SeanRaw.Web.Models.User
+@{
+    ViewData["Title"] = "Hồ sơ - Khách hàng";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section
+    style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <p class="section-eyebrow">Quản lý</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Hồ sơ của tôi</h1>
+    </div>
+</section>
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 900px; margin: 0 auto;">
+
+        <form method="post" action="/Customer/UpdateProfile">
+
+            <!-- Personal Info -->
+            <div style="border: 1px solid var(--border); padding: 40px; border-radius: 2px; margin-bottom: 40px;">
+                <h2 class="section-title" style="margin-bottom: 32px;">Thông tin cá nhân</h2>
+
+                <div style="display: grid; gap: 24px;">
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label class="form-label">Họ và tên đầy đủ</label>
+                        <input type="text" value="@Model.HoTenDayDu" name="HoTenDayDu" class="form-input" required />
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" value="@Model.DiaChiEmail" class="form-input" disabled
+                               style="opacity: 0.6;" />
+                        <p style="color: var(--silver); font-size: 12px; margin: 8px 0 0 0;">Email không thể thay đổi
+                        </p>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="tel" value="@Model.SoDienThoai" name="SoDienThoai" class="form-input" required />
+                    </div>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label class="form-label">Tên đăng nhập</label>
+                        <input type="text" value="@Model.TenDangNhap" class="form-input" disabled
+                               style="opacity: 0.6;" />
+                        <p style="color: var(--silver); font-size: 12px; margin: 8px 0 0 0;">Tên đăng nhập không thể
+                            thay đổi</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Account Status -->
+                <div style="border: 1px solid var(--border); padding: 40px; border-radius: 2px; margin-bottom: 40px;">
+                    <h2 class="section-title" style="margin-bottom: 32px;">Trạng thái tài khoản</h2>
+
+                    <div style="display: grid; gap: 24px;">
+
+                        <!-- Account Status -->
+                        <div
+                            style="padding: 20px; background: var(--ink-soft); border: 1px solid var(--border); border-radius: 2px;">
+                            <p
+                                style="color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 8px 0; font-weight: 500;">
+                                Trạng thái
+                            </p>
+                            @if (Model.TrangThaiTaiKhoan == 1)
+                            {
+                                <p style="color: #4a9e64; font-size: 16px; margin: 0;">
+                                    ✅ Hoạt động
+                                </p>
+                                <p style="color: var(--silver); font-size: 13px; margin: 8px 0 0 0;">
+                                    Tài khoản của bạn đang hoạt động bình thường
+                                </p>
+                            }
+                            else
+                            {
+                                <p style="color: #d94444; font-size: 16px; margin: 0;">
+                                    ❌ Bị khóa
+                                </p>
+                                <p style="color: var(--silver); font-size: 13px; margin: 8px 0 0 0;">
+                                    Liên hệ admin để mở khóa tài khoản
+                                </p>
+                            }
+                        </div>
+
+                        <!-- Member Since -->
+                        <div
+                            style="padding: 20px; background: var(--ink-soft); border: 1px solid var(--border); border-radius: 2px;">
+                            <p
+                                style="color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 8px 0; font-weight: 500;">
+                                Thành viên từ
+                            </p>
+                            <p style="color: var(--white); font-size: 16px; margin: 0;">
+                                @Model.NgayTaoTaiKhoan.ToString("dd/MM/yyyy")
+                            </p>
+                            <p style="color: var(--silver); font-size: 13px; margin: 8px 0 0 0;">
+                                Ngày tạo tài khoản
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div style="border: 1px solid var(--border); padding: 40px; border-radius: 2px; margin-bottom: 40px;">
+                    <h2 class="section-title" style="margin-bottom: 32px;">Bảo mật</h2>
+
+                    <div style="display: grid; gap: 24px;">
+
+                        <!-- Change Password -->
+                        <div class="form-group">
+                            <label class="form-label">Đổi mật khẩu</label>
+                            <p style="color: var(--silver); font-size: 13px; margin: 0 0 16px 0;">
+                                Để bảo mật tài khoản, hãy thay đổi mật khẩu thường xuyên.
+                            </p>
+                            <a href="#" class="btn-ghost" style="display: inline-block;">
+                                Đổi mật khẩu
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div style="display: flex; gap: 16px; justify-content: center;">
+                    <button type="submit" class="btn-gold"
+                            style="border: none; cursor: pointer; font-family: var(--ff-body);">
+                        Cập nhật hồ sơ
+                    </button>
+                    <a href="/Customer/Dashboard" class="btn-ghost">
+                        Hủy
+                    </a>
+                </div>
+
+            </form>
+
+            <!-- Footer -->
+            <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+                <a href="/Customer/Dashboard" class="btn-ghost">
+                    ← Quay lại Dashboard
+                </a>
+            </div>
+
+        </div>
+    </section>

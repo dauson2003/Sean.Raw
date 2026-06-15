@@ -1,0 +1,133 @@
+@{
+    ViewData["Title"] = "Quản lý đặt lịch";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section
+    style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <p class="section-eyebrow">Quản lý</p>
+            <h1 class="hero-title" style="margin-bottom: 0;">Đặt lịch chụp</h1>
+        </div>
+        <a href="/Admin/Bookings/Create" class="btn-gold"
+           style="border: none; cursor: pointer; font-family: var(--ff-body); white-space: nowrap;">
+            + Thêm mới
+        </a>
+    </div>
+</section>
+
+<!-- ── FILTERS ───────────────────────────────────────────── -->
+<section style="padding: 40px 64px; border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <input type="date"
+                   style="background: var(--surface); border: 1px solid var(--border); color: var(--white); padding: 8px 12px; font-family: var(--ff-body); cursor: pointer; border-radius: 2px; color-scheme: dark;"
+                   placeholder="Từ ngày" />
+            <input type="date"
+                   style="background: var(--surface); border: 1px solid var(--border); color: var(--white); padding: 8px 12px; font-family: var(--ff-body); cursor: pointer; border-radius: 2px; color-scheme: dark;"
+                   placeholder="Đến ngày" />
+            <select
+                style="background: var(--surface); border: 1px solid var(--border); color: var(--white); padding: 8px 12px; font-family: var(--ff-body); cursor: pointer; border-radius: 2px;">
+                <option value="">-- Trạng thái --</option>
+                <option value="pending">Đang chờ</option>
+                <option value="confirmed">Đã xác nhận</option>
+                <option value="completed">Hoàn tất</option>
+                <option value="cancelled">Hủy</option>
+            </select>
+            <input type="text"
+                   style="background: var(--surface); border: 1px solid var(--border); color: var(--white); padding: 8px 12px; font-family: var(--ff-body); border-radius: 2px; flex: 1; min-width: 200px;"
+                   placeholder="Tìm kiếm khách hàng..." />
+            <button class="btn-ghost" style="cursor: pointer;">Tìm</button>
+        </div>
+    </div>
+</section>
+
+<!-- ── TABLE ─────────────────────────────────────────────── -->
+<section style="padding: 40px 64px;">
+    <div style="max-width: 1200px; margin: 0 auto; overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+            <thead>
+                <tr style="border-bottom: 2px solid var(--border);">
+                    <th
+                        style="text-align: left; padding: 16px 0; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                        ID</th>
+                        <th
+                            style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                            Khách hàng</th>
+                            <th
+                                style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                                Ngày chụp</th>
+                                <th
+                                    style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                                    Gói dịch vụ</th>
+                                    <th
+                                        style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                                        Trạng thái</th>
+                                        <th
+                                            style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                                            Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid var(--border);">
+                                            <td style="padding: 16px 0; color: var(--white);">#BK001</td>
+                                            <td style="padding: 16px 12px; color: var(--white);">Nguyễn Văn A</td>
+                                            <td style="padding: 16px 12px; color: var(--white);">15/06/2026</td>
+                                            <td style="padding: 16px 12px; color: var(--white);">Gói Portrait</td>
+                                            <td style="padding: 16px 12px;"><span
+                                                style="background: rgba(201, 168, 76, 0.1); color: var(--gold); padding: 4px 8px; border-radius: 2px; font-size: 12px;">Đang
+                                                chờ</span></td>
+                                                <td style="padding: 16px 12px;"><a href="#"
+                                                                                   style="color: var(--gold); text-decoration: underline; cursor: pointer; font-size: 12px;">Chi
+                                                    tiết</a></td>
+                                                </tr>
+                                                <tr style="border-bottom: 1px solid var(--border);">
+                                                    <td style="padding: 16px 0; color: var(--white);">#BK002</td>
+                                                    <td style="padding: 16px 12px; color: var(--white);">Trần Thị B</td>
+                                                    <td style="padding: 16px 12px; color: var(--white);">10/06/2026</td>
+                                                    <td style="padding: 16px 12px; color: var(--white);">Gói Editorial</td>
+                                                    <td style="padding: 16px 12px;"><span
+                                                        style="background: rgba(74, 158, 100, 0.1); color: #4a9e64; padding: 4px 8px; border-radius: 2px; font-size: 12px;">Xác
+                                                        nhận</span></td>
+                                                        <td style="padding: 16px 12px;"><a href="#"
+                                                                                           style="color: var(--gold); text-decoration: underline; cursor: pointer; font-size: 12px;">Chi
+                                                            tiết</a></td>
+                                                        </tr>
+                                                        <tr style="border-bottom: 1px solid var(--border);">
+                                                            <td style="padding: 16px 0; color: var(--white);">#BK003</td>
+                                                            <td style="padding: 16px 12px; color: var(--white);">Phạm Minh C</td>
+                                                            <td style="padding: 16px 12px; color: var(--white);">08/06/2026</td>
+                                                            <td style="padding: 16px 12px; color: var(--white);">Gói Full Day</td>
+                                                            <td style="padding: 16px 12px;"><span
+                                                                style="background: rgba(100, 100, 100, 0.1); color: var(--silver); padding: 4px 8px; border-radius: 2px; font-size: 12px;">Hoàn
+                                                                tất</span></td>
+                                                                <td style="padding: 16px 12px;"><a href="#"
+                                                                                                   style="color: var(--gold); text-decoration: underline; cursor: pointer; font-size: 12px;">Chi
+                                                                    tiết</a></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </section>
+
+                                                <!-- ── PAGINATION ────────────────────────────────────────── -->
+                                                <section style="padding: 40px 64px; border-top: 1px solid var(--border); text-align: center;">
+                                                    <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                                                        <button class="btn-ghost" style="cursor: pointer; padding: 6px 10px; font-size: 12px;">← Trước</button>
+                                                        <button
+                                                        style="background: var(--gold); color: var(--ink); padding: 6px 10px; border: none; cursor: pointer; border-radius: 2px; font-family: var(--ff-body); font-size: 12px;">1</button>
+                                                        <button
+                                                        style="background: transparent; color: var(--white); padding: 6px 10px; border: 1px solid var(--border); cursor: pointer; border-radius: 2px; font-family: var(--ff-body); font-size: 12px;">2</button>
+                                                        <button
+                                                        style="background: transparent; color: var(--white); padding: 6px 10px; border: 1px solid var(--border); cursor: pointer; border-radius: 2px; font-family: var(--ff-body); font-size: 12px;">3</button>
+                                                        <button class="btn-ghost" style="cursor: pointer; padding: 6px 10px; font-size: 12px;">Tiếp →</button>
+                                                    </div>
+                                                </section>
+
+                                                <!-- ── FOOTER ────────────────────────────────────────────── -->
+                                                <section style="padding: 40px 64px; text-align: center; border-top: 1px solid var(--border);">
+                                                    <a href="/Admin" class="btn-ghost">
+                                                        ← Quay lại Dashboard
+                                                    </a>
+                                                </section>

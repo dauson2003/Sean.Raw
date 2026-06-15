@@ -1,0 +1,190 @@
+@model SeanRaw.Web.Models.User
+@{
+    ViewData["Title"] = "Hồ sơ - Nhiếp ảnh gia";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <p class="section-eyebrow">Quản lý</p>
+        <h1 class="hero-title" style="margin-bottom: 0;">Hồ sơ của tôi</h1>
+    </div>
+</section>
+
+<!-- ── CONTENT ───────────────────────────────────────────── -->
+<section style="padding: 60px 64px;">
+    <div style="max-width: 900px; margin: 0 auto;">
+
+        <form method="post" action="/Photographer/UpdateProfile">
+            
+            <!-- Personal Info -->
+            <div style="border: 1px solid var(--border); padding: 40px; border-radius: 2px; margin-bottom: 40px;">
+                <h2 class="section-title" style="margin-bottom: 32px;">Thông tin cá nhân</h2>
+
+                <div style="display: grid; gap: 24px;">
+                    
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label class="form-label">Họ và tên đầy đủ</label>
+                        <input type="text" value="@Model.HoTenDayDu" name="HoTenDayDu" class="form-input" required />
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" value="@Model.DiaChiEmail" class="form-input" disabled style="opacity: 0.6;" />
+                        <p style="color: var(--silver); font-size: 12px; margin: 8px 0 0 0;">Email không thể thay đổi</p>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="tel" value="@Model.SoDienThoai" name="SoDienThoai" class="form-input" required />
+                    </div>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label class="form-label">Tên đăng nhập</label>
+                        <input type="text" value="@Model.TenDangNhap" class="form-input" disabled style="opacity: 0.6;" />
+                        <p style="color: var(--silver); font-size: 12px; margin: 8px 0 0 0;">Tên đăng nhập không thể thay đổi</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Professional Info -->
+            <div style="border: 1px solid var(--border); padding: 40px; border-radius: 2px; margin-bottom: 40px;">
+                <h2 class="section-title" style="margin-bottom: 32px;">Thông tin chuyên nghiệp</h2>
+
+                <div style="display: grid; gap: 24px;">
+                    
+                    <!-- Portfolio Description -->
+                    <div class="form-group">
+                        <label class="form-label">Giới thiệu phong cách & kinh nghiệm</label>
+                        <textarea name="gioiThieu" class="form-input" placeholder="Mô tả phong cách chụp, kinh nghiệm, điểm mạnh của bạn..." style="min-height: 150px; resize: vertical;">@ViewBag.Profile?.GioiThieuPhongCach</textarea>
+                    </div>
+
+                    <!-- Rating -->
+                    @if (ViewBag.Profile != null)
+                    {
+                        <div class="form-group">
+                            <label class="form-label">Điểm đánh giá trung bình</label>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                @for (int i = 0; i < (int)ViewBag.Profile.DiemUyTinTrungBinh; i++)
+                                {
+                                    <span style="font-size: 20px;">⭐</span>
+                                }
+                                @for (int i = (int)ViewBag.Profile.DiemUyTinTrungBinh; i < 5; i++)
+                                {
+                                    <span style="font-size: 20px; opacity: 0.3;">⭐</span>
+                                }
+                                <span style="color: var(--gold); font-size: 14px; margin-left: 12px;">@ViewBag.Profile.DiemUyTinTrungBinh/5</span>
+                            </div>
+                            <p style="color: var(--silver); font-size: 12px; margin: 8px 0 0 0;">Dựa trên đánh giá của khách hàng</p>
+                        </div>
+                    }
+
+                    <!-- Balance -->
+                    @if (ViewBag.Profile != null)
+                    {
+                        <div class="form-group">
+                            <label class="form-label">Số dư ví</label>
+                            <div style="font-family: var(--ff-display); font-size: 28px; color: var(--gold); margin-top: 12px; font-weight: 300;">
+                                @ViewBag.Profile.SoDuViTien.ToString("N0") ₫
+                            </div>
+                            <p style="color: var(--silver); font-size: 12px; margin: 8px 0 0 0;">Tiền từ các buổi chụp đã hoàn tát</p>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+            <!-- Account Status -->
+            @if (ViewBag.Profile != null)
+            {
+                <div style="border: 1px solid var(--border); padding: 40px; border-radius: 2px; margin-bottom: 40px;">
+                    <h2 class="section-title" style="margin-bottom: 32px;">Trạng thái tài khoản</h2>
+
+                    <div style="display: grid; gap: 24px;">
+                        
+                        <!-- Verification Status -->
+                        <div style="padding: 20px; background: var(--ink-soft); border: 1px solid var(--border); border-radius: 2px;">
+                            <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 8px 0; font-weight: 500;">
+                                Trạng thái xác thực hồ sơ
+                            </p>
+                            @if (ViewBag.Profile.TrangThaiXacThuc == "da_xac_thuc")
+                            {
+                                <p style="color: #4a9e64; font-size: 16px; margin: 0;">
+                                    ✅ Đã xác thực
+                                </p>
+                                <p style="color: var(--silver); font-size: 13px; margin: 8px 0 0 0;">
+                                    Tài khoản của bạn đã được admin xác thực và phê duyệt
+                                </p>
+                            }
+                            else if (ViewBag.Profile.TrangThaiXacThuc == "cho_duyet")
+                            {
+                                <p style="color: var(--gold); font-size: 16px; margin: 0;">
+                                    ⏳ Chờ xác thực
+                                </p>
+                                <p style="color: var(--silver); font-size: 13px; margin: 8px 0 0 0;">
+                                    Hồ sơ đang chờ admin xác thực. Vui lòng kiên nhẫn chờ.
+                                </p>
+                            }
+                            else
+                            {
+                                <p style="color: #d94444; font-size: 16px; margin: 0;">
+                                    ❌ Từ chối
+                                </p>
+                                <p style="color: var(--silver); font-size: 13px; margin: 8px 0 0 0;">
+                                    Hồ sơ bị từ chối. Vui lòng liên hệ admin để biết chi tiết.
+                                </p>
+                            }
+                        </div>
+
+                        <!-- Account Status -->
+                        <div style="padding: 20px; background: var(--ink-soft); border: 1px solid var(--border); border-radius: 2px;">
+                            <p style="color: var(--gold); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 8px 0; font-weight: 500;">
+                                Trạng thái tài khoản
+                            </p>
+                            @if (Model.TrangThaiTaiKhoan == 1)
+                            {
+                                <p style="color: #4a9e64; font-size: 16px; margin: 0;">
+                                    ✅ Hoạt động
+                                </p>
+                            }
+                            else
+                            {
+                                <p style="color: #d94444; font-size: 16px; margin: 0;">
+                                    ❌ Bị khóa
+                                </p>
+                                <p style="color: var(--silver); font-size: 13px; margin: 8px 0 0 0;">
+                                    Liên hệ admin để mở khóa tài khoản
+                                </p>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+            <!-- Actions -->
+            <div style="display: flex; gap: 16px; justify-content: center;">
+                <button type="submit" class="btn-gold" style="border: none; cursor: pointer; font-family: var(--ff-body);">
+                    Cập nhật hồ sơ
+                </button>
+                <a href="/Photographer/Dashboard" class="btn-ghost">
+                    Hủy
+                </a>
+            </div>
+
+        </form>
+
+        <!-- Footer -->
+        <div style="margin-top: 60px; text-align: center; padding-top: 40px; border-top: 1px solid var(--border);">
+            <a href="/Photographer/Dashboard" class="btn-ghost">
+                ← Quay lại Dashboard
+            </a>
+        </div>
+
+    </div>
+</section>

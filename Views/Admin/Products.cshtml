@@ -1,0 +1,154 @@
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<section
+    style="padding: 60px 64px; background: linear-gradient(135deg, var(--ink-soft) 0%, var(--ink-mid) 100%); border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <p class="section-eyebrow">Quản lý</p>
+            <h1 class="hero-title" style="margin-bottom: 0;">Sản phẩm & Phụ kiện</h1>
+        </div>
+        <a href="/Admin/Products/Create" class="btn-gold"
+           style="border: none; cursor: pointer; font-family: var(--ff-body); white-space: nowrap;">
+            + Thêm sản phẩm
+        </a>
+    </div>
+</section>
+
+<!-- ── FILTERS ───────────────────────────────────────────── -->
+<section style="padding: 40px 64px; border-bottom: 1px solid var(--border);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <select
+                style="background: var(--surface); border: 1px solid var(--border); color: var(--white); padding: 8px 12px; font-family: var(--ff-body); cursor: pointer; border-radius: 2px;">
+                <option value="">-- Danh mục --</option>
+                <option value="lens">Ống kính</option>
+                <option value="light">Ánh sáng</option>
+                <option value="stand">Giá đỡ</option>
+                <option value="other">Khác</option>
+            </select>
+            <input type="text"
+                   style="background: var(--surface); border: 1px solid var(--border); color: var(--white); padding: 8px 12px; font-family: var(--ff-body); border-radius: 2px; flex: 1; min-width: 200px;"
+                   placeholder="Tìm kiếm sản phẩm..." />
+            <select
+                style="background: var(--surface); border: 1px solid var(--border); color: var(--white); padding: 8px 12px; font-family: var(--ff-body); cursor: pointer; border-radius: 2px;">
+                <option value="">-- Trạng thái kho --</option>
+                <option value="instock">Còn hàng</option>
+                <option value="lowstock">Sắp hết</option>
+                <option value="outofstock">Hết hàng</option>
+            </select>
+            <button class="btn-ghost" style="cursor: pointer;">Tìm</button>
+        </div>
+    </div>
+</section>
+
+<!-- ── TABLE ─────────────────────────────────────────────── -->
+<section style="padding: 40px 64px;">
+    <div style="max-width: 1200px; margin: 0 auto; overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+            <thead>
+                <tr style="border-bottom: 2px solid var(--border);">
+                    <th
+                        style="text-align: left; padding: 16px 0; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                        ID</th>
+                        <th
+                            style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                            Tên sản phẩm</th>
+                            <th
+                                style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                                Danh mục</th>
+                                <th
+                                    style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                                    Giá</th>
+                                    <th
+                                        style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                                        Kho</th>
+                                        <th
+                                            style="text-align: left; padding: 16px 12px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 400;">
+                                            Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid var(--border);">
+                                            <td style="padding: 16px 0; color: var(--white);">SP001</td>
+                                            <td style="padding: 16px 12px; color: var(--white);">Canon EF 50mm f/1.8</td>
+                                            <td style="padding: 16px 12px; color: var(--white);">Ống kính</td>
+                                            <td style="padding: 16px 12px; color: var(--gold);">3,200,000 ₫</td>
+                                            <td style="padding: 16px 12px;"><span
+                                                style="background: rgba(74, 158, 100, 0.1); color: #4a9e64; padding: 4px 8px; border-radius: 2px; font-size: 12px;">15
+                                                cái</span></td>
+                                                <td style="padding: 16px 12px; display: flex; gap: 8px;">
+                                                    <a href="#"
+                                                       style="color: var(--gold); text-decoration: underline; cursor: pointer; font-size: 12px;">Sửa</a>
+                                                    <a href="#"
+                                                       style="color: #d94444; text-decoration: underline; cursor: pointer; font-size: 12px;">Xóa</a>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid var(--border);">
+                                                <td style="padding: 16px 0; color: var(--white);">SP002</td>
+                                                <td style="padding: 16px 12px; color: var(--white);">Godox SL-60W LED</td>
+                                                <td style="padding: 16px 12px; color: var(--white);">Ánh sáng</td>
+                                                <td style="padding: 16px 12px; color: var(--gold);">8,500,000 ₫</td>
+                                                <td style="padding: 16px 12px;"><span
+                                                    style="background: rgba(201, 168, 76, 0.1); color: var(--gold); padding: 4px 8px; border-radius: 2px; font-size: 12px;">3
+                                                    cái</span></td>
+                                                    <td style="padding: 16px 12px; display: flex; gap: 8px;">
+                                                        <a href="#"
+                                                           style="color: var(--gold); text-decoration: underline; cursor: pointer; font-size: 12px;">Sửa</a>
+                                                        <a href="#"
+                                                           style="color: #d94444; text-decoration: underline; cursor: pointer; font-size: 12px;">Xóa</a>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom: 1px solid var(--border);">
+                                                    <td style="padding: 16px 0; color: var(--white);">SP003</td>
+                                                    <td style="padding: 16px 12px; color: var(--white);">Manfrotto 190 Tripod</td>
+                                                    <td style="padding: 16px 12px; color: var(--white);">Giá đỡ</td>
+                                                    <td style="padding: 16px 12px; color: var(--gold);">2,100,000 ₫</td>
+                                                    <td style="padding: 16px 12px;"><span
+                                                        style="background: rgba(217, 68, 68, 0.1); color: #d94444; padding: 4px 8px; border-radius: 2px; font-size: 12px;">0
+                                                        cái</span></td>
+                                                        <td style="padding: 16px 12px; display: flex; gap: 8px;">
+                                                            <a href="#"
+                                                               style="color: var(--gold); text-decoration: underline; cursor: pointer; font-size: 12px;">Sửa</a>
+                                                            <a href="#"
+                                                               style="color: #d94444; text-decoration: underline; cursor: pointer; font-size: 12px;">Xóa</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="border-bottom: 1px solid var(--border);">
+                                                        <td style="padding: 16px 0; color: var(--white);">SP004</td>
+                                                        <td style="padding: 16px 12px; color: var(--white);">SanDisk Extreme Pro SD Card</td>
+                                                        <td style="padding: 16px 12px; color: var(--white);">Khác</td>
+                                                        <td style="padding: 16px 12px; color: var(--gold);">850,000 ₫</td>
+                                                        <td style="padding: 16px 12px;"><span
+                                                            style="background: rgba(74, 158, 100, 0.1); color: #4a9e64; padding: 4px 8px; border-radius: 2px; font-size: 12px;">28
+                                                            cái</span></td>
+                                                            <td style="padding: 16px 12px; display: flex; gap: 8px;">
+                                                                <a href="#"
+                                                                   style="color: var(--gold); text-decoration: underline; cursor: pointer; font-size: 12px;">Sửa</a>
+                                                                <a href="#"
+                                                                   style="color: #d94444; text-decoration: underline; cursor: pointer; font-size: 12px;">Xóa</a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </section>
+
+                                        <!-- ── PAGINATION ────────────────────────────────────────── -->
+                                        <section style="padding: 40px 64px; border-top: 1px solid var(--border); text-align: center;">
+                                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                                                <button class="btn-ghost" style="cursor: pointer; padding: 6px 10px; font-size: 12px;">← Trước</button>
+                                                <button
+                                                style="background: var(--gold); color: var(--ink); padding: 6px 10px; border: none; cursor: pointer; border-radius: 2px; font-family: var(--ff-body); font-size: 12px;">1</button>
+                                                <button class="btn-ghost" style="cursor: pointer; padding: 6px 10px; font-size: 12px;">Tiếp →</button>
+                                            </div>
+                                        </section>
+
+                                        <!-- ── FOOTER ────────────────────────────────────────────── -->
+                                        <section style="padding: 40px 64px; text-align: center; border-top: 1px solid var(--border);">
+                                            <a href="/Admin" class="btn-ghost">
+                                                ← Quay lại Dashboard
+                                            </a>
+                                        </section>
